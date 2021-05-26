@@ -74,11 +74,15 @@ class MainActivity : AppCompatActivity() {
 
 
 })
+        viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
+        viewModel.taskList.observe(this, Observer {
+            rvAdapter.notifyDataSetChanged()
+        })
     }
 
 }
-//  private fun accesText() {
-//      button.setOnClickListener {
-//          viewModel.currentNumber.value = ++viewModel.number
-//      }
-//  }
+//private fun accesText() {
+//    button.setOnClickListener {
+//        viewModel.currentNumber.value = ++viewModel.number
+//    }
+//}
