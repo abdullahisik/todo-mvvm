@@ -6,7 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "todo_items")
-data class TodoEntity(
+data class ModelsEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
 
@@ -14,6 +14,7 @@ data class TodoEntity(
     @ColumnInfo(name = "description") var description: String,
     @ColumnInfo(name = "schedule") val schedule: Int,
     @ColumnInfo(name = "photograph") val photograph: Bitmap
+
 
 
 

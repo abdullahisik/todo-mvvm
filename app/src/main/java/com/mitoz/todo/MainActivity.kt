@@ -2,17 +2,13 @@ package com.mitoz.todo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mitoz.todo.Adapters.AdaptorsRecAdaptor
+import com.mitoz.todo.Adapters.AdaptersRecAdaptor
 import com.mitoz.todo.Models.ModelsModel
 import com.mitoz.todo.ViewModels.ViewModelsViewModel
 import com.mitoz.todo.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding!!
 
     private var languageList = ArrayList<ModelsModel>()
-    private lateinit var rvAdapter: AdaptorsRecAdaptor
+    private lateinit var rvAdapter: AdaptersRecAdaptor
     lateinit var viewModel: ViewModelsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +26,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.rvList.layoutManager = LinearLayoutManager(this)
 
-        rvAdapter = AdaptorsRecAdaptor(languageList)
+        rvAdapter = AdaptersRecAdaptor(languageList)
         binding.rvList.adapter = rvAdapter
-
 
         val language1 = ModelsModel(
             "Java",

@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mitoz.todo.Models.ModelsModel
 import com.mitoz.todo.databinding.SingleItemBinding
 
-class AdaptorsRecAdaptor(
+class AdaptersRecAdaptor(
     private var languageList: List<ModelsModel>
-) : RecyclerView.Adapter<AdaptorsRecAdaptor.ViewHolder>() {
+) : RecyclerView.Adapter<AdaptersRecAdaptor.ViewHolder>() {
 
 
     inner class ViewHolder(val binding: SingleItemBinding) : RecyclerView.ViewHolder(binding.root)
