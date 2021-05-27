@@ -12,6 +12,8 @@ import com.mitoz.todo.ViewModels.ViewModelsViewModel
 import com.mitoz.todo.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
