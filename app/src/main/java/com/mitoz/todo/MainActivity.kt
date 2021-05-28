@@ -1,7 +1,10 @@
 package com.mitoz.todo
 
-import androidx.appcompat.app.AppCompatActivity
+
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +18,7 @@ import com.mitoz.todo.ViewModels.ViewModelsViewModel
 import com.mitoz.todo.databinding.ActivityMainBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlin.collections.ArrayList
+
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -32,9 +35,26 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.rvList.layoutManager = LinearLayoutManager(this)
-
+        val icon = BitmapFactory.decodeResource(
+            this.getResources(),
+            R.drawable.ic_launcher_background
+        )
         db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
+        GlobalScope.launch {
+            db.todoDao().insertAll(ModelsEntity(
+                0,
+                "Çöpü at",
+                "Bu akşam çöpleri atman gerek",
+                2565481,
+                "urimuri"
+            ))
 
+            val data = db.todoDao().getAll()
+
+            data?.forEach {
+                println(it)
+            }
+        }
 
 insertData()
         rvAdapter = AdaptersRecAdaptor(languageList)

@@ -1,6 +1,6 @@
 package com.mitoz.todo.Models
 
-import android.graphics.Bitmap
+
 
 class ModelsModel(
     val name : String ="",
