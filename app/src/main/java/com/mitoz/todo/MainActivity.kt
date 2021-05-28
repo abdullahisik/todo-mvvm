@@ -5,27 +5,38 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.mitoz.todo.Adapters.AdaptersRecAdaptor
+import com.mitoz.todo.Database.DatabaseAppDatabase
+import com.mitoz.todo.Models.ModelsDao
+import com.mitoz.todo.Models.ModelsEntity
 import com.mitoz.todo.Models.ModelsModel
 import com.mitoz.todo.ViewModels.ViewModelsViewModel
 import com.mitoz.todo.databinding.ActivityMainBinding
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-
+    private lateinit var todoDao: ModelsDao
+    private lateinit var db: DatabaseAppDatabase
     private var languageList = ArrayList<ModelsModel>()
     private lateinit var rvAdapter: AdaptersRecAdaptor
     lateinit var viewModel: ViewModelsViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.rvList.layoutManager = LinearLayoutManager(this)
 
+        db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
+
+
+insertData()
         rvAdapter = AdaptersRecAdaptor(languageList)
         binding.rvList.adapter = rvAdapter
 
@@ -36,32 +47,12 @@ class MainActivity : AppCompatActivity() {
                     "desktop applications, web applications, client server applications, enterprise applications and many more. ",
             false
         )
-        val language2 = ModelsModel(
-            "Kotlin",
-            "Kotlin is a statically typed, general-purpose programming language" +
-                    " developed by JetBrains, that has built world-class IDEs like IntelliJ IDEA, PhpStorm, Appcode, etc.",
-            false
-        )
-        val language3 = ModelsModel(
-            "Python",
-            "Python is a high-level, general-purpose and a very popular programming language." +
-                    " Python programming language (latest Python 3) is being used in web development, Machine Learning applications, " +
-                    "along with all cutting edge technology in Software Industry.",
-            false
-        )
-        val language4 = ModelsModel(
-            "CPP",
-            "C++ is a general purpose programming language and widely used now a days for " +
-                    "competitive programming. It has imperative, object-oriented and generic programming features. ",
-            false
-        )
+
+
+
 
         // add items to list
         languageList.add(language1)
-        languageList.add(language2)
-        languageList.add(language3)
-        languageList.add(language4)
-
         rvAdapter.notifyDataSetChanged()
 
 
@@ -78,6 +69,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
+ private fun insertData() {
+
+
+    }
+
+
+
 //private fun accesText() {
 //    button.setOnClickListener {
 //        viewModel.currentNumber.value = ++viewModel.number
