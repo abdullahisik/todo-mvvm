@@ -1,4 +1,4 @@
-package com.mitoz.todo.Models
+package com.mitoz.todo.models
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

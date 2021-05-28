@@ -1,8 +1,8 @@
-package com.mitoz.todo.ViewModels
+package com.mitoz.todo.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.mitoz.todo.Models.ModelsModel
+import com.mitoz.todo.models.ModelsModel
 
 class ViewModelsViewModel  : ViewModel(){
     private var languageList = ArrayList<ModelsModel>()

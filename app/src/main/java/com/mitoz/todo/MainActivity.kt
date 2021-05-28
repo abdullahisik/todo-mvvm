@@ -2,19 +2,18 @@ package com.mitoz.todo
 
 
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
-import com.mitoz.todo.Adapters.AdaptersRecAdaptor
-import com.mitoz.todo.Database.DatabaseAppDatabase
-import com.mitoz.todo.Models.ModelsDao
-import com.mitoz.todo.Models.ModelsEntity
-import com.mitoz.todo.Models.ModelsModel
-import com.mitoz.todo.ViewModels.ViewModelsViewModel
+import com.mitoz.todo.adapters.AdaptersRecAdaptor
+import com.mitoz.todo.database.DatabaseAppDatabase
+import com.mitoz.todo.models.ModelsDao
+import com.mitoz.todo.models.ModelsEntity
+import com.mitoz.todo.models.ModelsModel
+import com.mitoz.todo.viewmodels.ViewModelsViewModel
 import com.mitoz.todo.databinding.ActivityMainBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -23,7 +22,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
-    private lateinit var todoDao: ModelsDao
+    //private lateinit var todoDao: ModelsDao
     private lateinit var db: DatabaseAppDatabase
     private var languageList = ArrayList<ModelsModel>()
     private lateinit var rvAdapter: AdaptersRecAdaptor
@@ -49,6 +48,7 @@ class MainActivity : AppCompatActivity() {
                 "urimuri"
             ))
 
+
             val data = db.todoDao().getAll()
 
             data?.forEach {
@@ -56,7 +56,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-insertData()
         rvAdapter = AdaptersRecAdaptor(languageList)
         binding.rvList.adapter = rvAdapter
 
@@ -90,10 +89,7 @@ insertData()
 
 }
 
- private fun insertData() {
 
-
-    }
 
 
 

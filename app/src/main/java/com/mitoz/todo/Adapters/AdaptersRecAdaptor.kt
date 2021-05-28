@@ -1,10 +1,10 @@
-package com.mitoz.todo.Adapters
+package com.mitoz.todo.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.mitoz.todo.Models.ModelsModel
+import com.mitoz.todo.models.ModelsModel
 import com.mitoz.todo.databinding.SingleItemBinding
 
 class AdaptersRecAdaptor(
