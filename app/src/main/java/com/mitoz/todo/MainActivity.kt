@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 "Çöpü at",
                 "Bu akşam çöpleri atman gerek",
                 2565481,
-                "urimuri"
+                "urimuri",0
             ))
 
 
@@ -60,11 +60,9 @@ class MainActivity : AppCompatActivity() {
         binding.rvList.adapter = rvAdapter
 
         val language1 = ModelsModel(
-            "Java",
-            "Java is an Object Oriented Programming language." +
-                    " Java is used in all kind of applications like Mobile Applications (Android is Java based), " +
-                    "desktop applications, web applications, client server applications, enterprise applications and many more. ",
-            false
+            0,
+            "Java is an Object Oriented Programming language.",
+            "java is running on 3 billion devices",54651211,"uri muri",0
         )
 
 

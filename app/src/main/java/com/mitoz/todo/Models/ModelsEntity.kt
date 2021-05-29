@@ -10,6 +10,8 @@ data class ModelsEntity(
     @PrimaryKey(autoGenerate = true) var Id: Int,
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "description") var description: String,
-    @ColumnInfo(name = "schedule") val schedule: Long,
-    @ColumnInfo(name = "photograph") val photograph: String
+    @ColumnInfo(name = "schedule") val schedule: Int,
+    @ColumnInfo(name = "photograph") val photograph: String,
+    @ColumnInfo(name = "expanded") val expanded: Int
+
     )
