@@ -12,6 +12,6 @@ data class ModelsEntity(
     @ColumnInfo(name = "description") var description: String,
     @ColumnInfo(name = "schedule") val schedule: Int,
     @ColumnInfo(name = "photograph") val photograph: String,
-    @ColumnInfo(name = "expanded") val expanded: Int
+    @ColumnInfo(name = "expanded") var expanded: Int
 
     )

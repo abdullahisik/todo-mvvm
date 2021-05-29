@@ -15,6 +15,7 @@ import com.mitoz.todo.models.ModelsEntity
 import com.mitoz.todo.models.ModelsModel
 import com.mitoz.todo.viewmodels.ViewModelsViewModel
 import com.mitoz.todo.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -24,7 +25,8 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding!!
     //private lateinit var todoDao: ModelsDao
     private lateinit var db: DatabaseAppDatabase
-    private var languageList = ArrayList<ModelsModel>()
+    private var todosList = ArrayList<ModelsEntity>()
+
     private lateinit var rvAdapter: AdaptersRecAdaptor
     lateinit var viewModel: ViewModelsViewModel
 
@@ -34,11 +36,15 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.rvList.layoutManager = LinearLayoutManager(this)
-        val icon = BitmapFactory.decodeResource(
-            this.getResources(),
-            R.drawable.ic_launcher_background
-        )
+
         db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
+
+        db.todoDao().findByTitle("Çöpü at").observe(this,Observer{
+            it?.forEach {
+                println("Selam"+it)
+                //  viewModel.taskList.value.add();
+            }
+        })
         GlobalScope.launch {
             db.todoDao().insertAll(ModelsEntity(
                 0,
@@ -52,11 +58,15 @@ class MainActivity : AppCompatActivity() {
             val data = db.todoDao().getAll()
 
             data?.forEach {
-                println(it)
+                todosList.add(it)
+                //  viewModel.taskList.value.add();
             }
         }
 
-        rvAdapter = AdaptersRecAdaptor(languageList)
+
+
+
+        rvAdapter = AdaptersRecAdaptor(todosList)
         binding.rvList.adapter = rvAdapter
 
         val language1 = ModelsModel(
@@ -69,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 
 
         // add items to list
-        languageList.add(language1)
+
         rvAdapter.notifyDataSetChanged()
 
 
@@ -81,6 +91,9 @@ class MainActivity : AppCompatActivity() {
 })
         viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
         viewModel.taskList.observe(this, Observer {
+
+
+
             rvAdapter.notifyDataSetChanged()
         })
     }

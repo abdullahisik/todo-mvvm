@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.mitoz.todo.models.ModelsModel
 import com.mitoz.todo.databinding.SingleItemBinding
+import com.mitoz.todo.models.ModelsEntity
 
 class AdaptersRecAdaptor(
-    private var languageList: List<ModelsModel>
+    private var todosList : List<ModelsEntity>
 ) : RecyclerView.Adapter<AdaptersRecAdaptor.ViewHolder>() {
 
 
@@ -22,20 +22,20 @@ class AdaptersRecAdaptor(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder){
-            with(languageList[position]){
-                val expand = convertToIntBoolean(this.expand)
-                binding.tvLangName.text = this.name
+            with(todosList[position]){
+                val expand = convertToIntBoolean(this.expanded)
+                binding.tvLangName.text = this.title
                 binding.tvDescription.text = this.description
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
                 binding.cardLayout.setOnClickListener {
-                    this.expand = convertBooleanToInt(expand)
+                    this.expanded = convertBooleanToInt(expand)
                     notifyDataSetChanged()
                 }
             }
         }
     }
     override fun getItemCount(): Int {
-        return languageList.size
+        return todosList.size
     }
     private fun convertToIntBoolean(int : Int) : Boolean{
         if(int == 0) {
