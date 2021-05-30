@@ -6,4 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.UiTodoEntryActivity">
 
+    <EditText
+        android:id="@+id/textTitle"
+        android:layout_width="279dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="132dp"
+        android:background="@drawable/rounded_edittext"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
