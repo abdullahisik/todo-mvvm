@@ -1,8 +1,10 @@
 package com.mitoz.todo
 
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -16,6 +18,7 @@ import com.mitoz.todo.models.ModelsEntity
 import com.mitoz.todo.models.ModelsModel
 import com.mitoz.todo.viewmodels.ViewModelsViewModel
 import com.mitoz.todo.databinding.ActivityMainBinding
+import com.mitoz.todo.ui.UiTodoEntryActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -75,11 +78,11 @@ class MainActivity : AppCompatActivity() {
             title = "Olacak"
             elevation = 15F
 
-            // toolbar button click listener
-            buttonToolbar.setOnClickListener {
-                // change toolbar title
-                this.title = "TODO"
-            }
+
+        }
+        buttonToolbar.setOnClickListener {
+            val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
+            startActivity(intent) 
         }
         val language1 = ModelsModel(
             0,
