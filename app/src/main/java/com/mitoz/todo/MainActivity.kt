@@ -3,6 +3,7 @@ package com.mitoz.todo
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         db.todoDao().findByTitle("done").observe(this,Observer{
             it?.forEach {
-                
+
 
                 //  viewModel.taskList.value.add();
             }
@@ -70,7 +71,16 @@ class MainActivity : AppCompatActivity() {
 
         rvAdapter = AdaptersRecAdaptor(todosList)
         binding.rvList.adapter = rvAdapter
+        supportActionBar?.apply {
+            title = "Olacak"
+            elevation = 15F
 
+            // toolbar button click listener
+            buttonToolbar.setOnClickListener {
+                // change toolbar title
+                this.title = "TODO"
+            }
+        }
         val language1 = ModelsModel(
             0,
             "Java is an Object Oriented Programming language.",
