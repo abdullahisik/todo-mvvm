@@ -9,8 +9,8 @@ interface ModelsDao  {
 
     @Query("SELECT * FROM todo_items")
     fun getAll(): List<ModelsEntity>
-    @Query("SELECT * FROM todo_items WHERE title LIKE :title")
-    fun findByTitle(title: String): LiveData<List<ModelsEntity>>
+    @Query("SELECT * FROM todo_items WHERE doneornot LIKE :doneornot")
+    fun findByTitle(doneornot: String): LiveData<List<ModelsEntity>>
     @Insert
     fun insertAll(vararg todo: ModelsEntity)
 

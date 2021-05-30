@@ -23,12 +23,12 @@ class AdaptersRecAdaptor(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder){
             with(todosList[position]){
-                val expand = convertToIntBoolean(this.expanded)
+                val expand = convertIntToBoolean(this.expand)
                 binding.tvLangName.text = this.title
                 binding.tvDescription.text = this.description
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
                 binding.cardLayout.setOnClickListener {
-                    this.expanded = convertBooleanToInt(expand)
+                    this.expand = convertBooleanToInt(expand)
                     notifyDataSetChanged()
                 }
             }
@@ -37,7 +37,7 @@ class AdaptersRecAdaptor(
     override fun getItemCount(): Int {
         return todosList.size
     }
-    private fun convertToIntBoolean(int : Int) : Boolean{
+    private fun convertIntToBoolean(int : Int) : Boolean{
         if(int == 0) {
             return false
         } else {

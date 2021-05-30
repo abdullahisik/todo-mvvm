@@ -39,9 +39,10 @@ class MainActivity : AppCompatActivity() {
 
         db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
 
-        db.todoDao().findByTitle("Çöpü at").observe(this,Observer{
+        db.todoDao().findByTitle("done").observe(this,Observer{
             it?.forEach {
-                println("Selam"+it)
+                
+
                 //  viewModel.taskList.value.add();
             }
         })
@@ -51,14 +52,15 @@ class MainActivity : AppCompatActivity() {
                 "Çöpü at",
                 "Bu akşam çöpleri atman gerek",
                 2565481,
-                "urimuri",0
+                "urimuri",0,"not"
             ))
 
 
             val data = db.todoDao().getAll()
 
             data?.forEach {
-                todosList.add(it)
+                if(it.doneornot == "not")
+                        todosList.add(it)
                 //  viewModel.taskList.value.add();
             }
         }
