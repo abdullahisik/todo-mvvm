@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">TODO</string>
-    <string name="label_title">TODO</string>
+    <string name="label_title">Title</string>
+    <string name="lable_description">Description</string>
+    <string name="label_schedule">Schedule</string>
+    <string name="label_time">Time</string>
+
 </resources>
