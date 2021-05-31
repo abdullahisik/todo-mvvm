@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var db: DatabaseAppDatabase
     private var todosList = ArrayList<ModelsEntity>()
 
+
     private lateinit var rvAdapter: AdaptersRecAdaptor
     lateinit var viewModel: ViewModelsViewModel
 
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                 2565481,
                 "urimuri",0,"not"
             ))
-
+            
 
             val data = db.todoDao().getAll()
 
@@ -81,8 +82,9 @@ class MainActivity : AppCompatActivity() {
 
         }
         buttonToolbar.setOnClickListener {
+            viewModel.taskList.value = todosList
             val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
-            startActivity(intent) 
+           // startActivity(intent)
         }
         val language1 = ModelsModel(
             0,
@@ -107,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
         viewModel.taskList.observe(this, Observer {
 
-
+            println("VİEW MODEL TASK LİST OBSERVE")
 
             rvAdapter.notifyDataSetChanged()
         })
