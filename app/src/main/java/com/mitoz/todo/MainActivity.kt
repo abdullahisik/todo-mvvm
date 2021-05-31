@@ -2,18 +2,15 @@ package com.mitoz.todo
 
 
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.widget.Toast
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.mitoz.todo.adapters.AdaptersRecAdaptor
+import com.mitoz.todo.statics.StaticsContext
 import com.mitoz.todo.database.DatabaseAppDatabase
-import com.mitoz.todo.models.ModelsDao
 import com.mitoz.todo.models.ModelsEntity
 import com.mitoz.todo.models.ModelsModel
 import com.mitoz.todo.viewmodels.ViewModelsViewModel
@@ -31,9 +28,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var db: DatabaseAppDatabase
     private var todosList = ArrayList<ModelsEntity>()
 
-
     private lateinit var rvAdapter: AdaptersRecAdaptor
     lateinit var viewModel: ViewModelsViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +38,6 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.rvList.layoutManager = LinearLayoutManager(this)
-
         db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
 
         db.todoDao().findByTitle("done").observe(this,Observer{
@@ -51,23 +47,25 @@ class MainActivity : AppCompatActivity() {
                 //  viewModel.taskList.value.add();
             }
         })
+
         GlobalScope.launch {
-            db.todoDao().insertAll(ModelsEntity(
-                0,
-                "Çöpü at",
-                "Bu akşam çöpleri atman gerek",
-                2565481,
-                "urimuri",0,"not"
-            ))
-            
+            StaticsContext.context(applicationContext)
+
+//            db.todoDao().insertAll(ModelsEntity(
+//                0,
+//                "Çöpü at",
+//                "Bu akşam çöpleri atman gerek",
+//                2565481,
+//                "urimuri",0,"not"
+//            ))
 
             val data = db.todoDao().getAll()
-
             data?.forEach {
-                if(it.doneornot == "not")
-                        todosList.add(it)
+                todosList.add(it)
                 //  viewModel.taskList.value.add();
             }
+
+
         }
 
 
@@ -82,9 +80,9 @@ class MainActivity : AppCompatActivity() {
 
         }
         buttonToolbar.setOnClickListener {
-            viewModel.taskList.value = todosList
+
             val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
-           // startActivity(intent)
+         startActivity(intent)
         }
         val language1 = ModelsModel(
             0,
@@ -110,9 +108,14 @@ class MainActivity : AppCompatActivity() {
         viewModel.taskList.observe(this, Observer {
 
             println("VİEW MODEL TASK LİST OBSERVE")
-
+            it?.forEach {
+                todosList.add(it)
+                //  viewModel.taskList.value.add();
+            }
             rvAdapter.notifyDataSetChanged()
         })
+
+
     }
 
 }
