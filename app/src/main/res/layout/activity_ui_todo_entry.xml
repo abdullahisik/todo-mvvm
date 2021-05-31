@@ -67,8 +67,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textinputSchedule"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="200dp"
-        android:layout_height="58dp"
+        android:layout_width="181dp"
+        android:layout_height="55dp"
 
 
         android:layout_marginTop="56dp"
@@ -89,8 +89,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textinputTime"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="200dp"
-        android:layout_height="58dp"
+        android:layout_width="216dp"
+        android:layout_height="55dp"
 
 
         android:layout_marginTop="56dp"
@@ -112,16 +112,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="285dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_height="232dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+
         android:background="@drawable/rounded_edittext"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textinputTime"
-        app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="@+id/textinputSchedule"
         app:layout_constraintTop_toBottomOf="@+id/textinputSchedule"
-        app:layout_constraintVertical_bias="0.376">
+        app:layout_constraintVertical_bias="0.397">
 
         <Button
             android:id="@+id/button"
@@ -140,8 +139,9 @@
             android:id="@+id/imageView"
             android:layout_width="166dp"
             android:layout_height="127dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/ic_menu_gallery" />
@@ -178,13 +178,13 @@
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textinputSchedule"
-        app:layout_constraintVertical_bias="0.454" />
+        app:layout_constraintVertical_bias="0.575" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="132dp"
+        android:layout_marginEnd="124dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/textinputTime"
         app:layout_constraintEnd_toEndOf="parent"

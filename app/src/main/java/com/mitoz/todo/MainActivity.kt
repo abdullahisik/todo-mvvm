@@ -51,13 +51,13 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch {
             StaticsContext.context(applicationContext)
 
-//            db.todoDao().insertAll(ModelsEntity(
-//                0,
-//                "Çöpü at",
-//                "Bu akşam çöpleri atman gerek",
-//                2565481,
-//                "urimuri",0,"not"
-//            ))
+            db.todoDao().insertAll(ModelsEntity(
+                0,
+               "Çöpü at",
+                "Bu akşam çöpleri atman gerek",
+                2565481,
+                "urimuri",0,"not"
+           ))
 
             val data = db.todoDao().getAll()
             data?.forEach {
