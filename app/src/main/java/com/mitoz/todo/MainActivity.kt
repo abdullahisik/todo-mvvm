@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         rvAdapter = AdaptersRecAdaptor(todosList)
         binding.rvList.adapter = rvAdapter
+
         supportActionBar?.apply {
             title = "Olacak"
             elevation = 15F
