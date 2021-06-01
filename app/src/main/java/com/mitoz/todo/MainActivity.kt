@@ -38,41 +38,30 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.rvList.layoutManager = LinearLayoutManager(this)
-        db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
+        StaticsContext.cntx = applicationContext
+
+        db = Room.databaseBuilder(applicationContext, DatabaseAppDatabase::class.java, "todo-list.db").build()
 
         db.todoDao().findByTitle("done").observe(this,Observer{
             it?.forEach {
 
+                println("findbytitle")
 
                 //  viewModel.taskList.value.add();
             }
         })
 
-        GlobalScope.launch {
-            StaticsContext.context(applicationContext)
-
-            db.todoDao().insertAll(ModelsEntity(
-                0,
-               "Çöpü at",
-                "Bu akşam çöpleri atman gerek",
-                2565481,
-                "urimuri",0,"not"
-           ))
-
-            val data = db.todoDao().getAll()
-            data?.forEach {
-                todosList.add(it)
-                //  viewModel.taskList.value.add();
-            }
-
-
-        }
 
 
 
+//        val data = db.todoDao().getAll()
+//        data?.forEach {
+//            todosList.add(it)
+//            //  viewModel.taskList.value.add();
+//        }
 
-        rvAdapter = AdaptersRecAdaptor(todosList)
-        binding.rvList.adapter = rvAdapter
+       // rvAdapter = AdaptersRecAdaptor(todosList)
+        //binding.rvList.adapter = rvAdapter
 
         supportActionBar?.apply {
             title = "Olacak"
@@ -95,30 +84,32 @@ class MainActivity : AppCompatActivity() {
 
 
         // add items to list
-
+        rvAdapter = AdaptersRecAdaptor(todosList)
+        binding.rvList.adapter = rvAdapter
         rvAdapter.notifyDataSetChanged()
 
 
-
-    viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
-        viewModel.currentNumber.observe(this, Observer {
-
-
-})
         viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
         viewModel.taskList.observe(this, Observer {
 
-            println("VİEW MODEL TASK LİST OBSERVE")
-            it?.forEach {
+
+         it?.forEach {
                 todosList.add(it)
-                //  viewModel.taskList.value.add();
             }
-            rvAdapter.notifyDataSetChanged()
+                rvAdapter = AdaptersRecAdaptor(todosList)
+                binding.rvList.adapter = rvAdapter
+                rvAdapter.notifyDataSetChanged()
+
+
+
+            println("VİEW MODEL TASK LİST OBSERVE")
+
+           // rvAdapter.notifyDataSetChanged()
+
+
+
         })
-
-
     }
-
 }
 
 

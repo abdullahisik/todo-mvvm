@@ -14,10 +14,17 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
+import androidx.room.Room
 import com.mitoz.todo.MainActivity
 import com.mitoz.todo.R
+import com.mitoz.todo.adapters.AdaptersRecAdaptor
+import com.mitoz.todo.database.DatabaseAppDatabase
+import com.mitoz.todo.models.ModelsEntity
+import com.mitoz.todo.statics.StaticsContext
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_ui_todo_entry.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class UiTodoEntryActivity : AppCompatActivity() {
@@ -26,7 +33,7 @@ class UiTodoEntryActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private val pickImage = 100
     lateinit var imageView: ImageView
-
+    private lateinit var db: DatabaseAppDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ui_todo_entry)
@@ -38,6 +45,7 @@ class UiTodoEntryActivity : AppCompatActivity() {
 
 
         }
+        db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
 
 
 
@@ -51,6 +59,20 @@ buttonBrowseFiles.setOnClickListener(){
         buttonToolbarEntry.setOnClickListener {
             val inputTitle = textinpuTitle.editText?.text.toString()
             val inputDesction = textinpuTitle.editText?.text.toString()
+
+            GlobalScope.launch {
+                db.todoDao().insertAll(
+                    ModelsEntity(
+                        0,
+                        "Çöpü at",
+                        "Bu akşam çöpleri atman gerek",
+                        2565481,
+                        "urimuri",0,"not"
+                    )
+                )
+
+
+            }
 
             val intent = Intent(applicationContext,MainActivity::class.java)
             startActivity(intent)
