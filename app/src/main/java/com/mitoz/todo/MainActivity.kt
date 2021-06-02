@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         buttonToolbar.setOnClickListener {
 
             getNotification("5 second delay","1.1")?.let { it1 -> scheduleNotification(it1, 5000,1) };
-            getNotification("5 second delay","2.2")?.let { it2 -> scheduleNotification(it2, 10000,2) };
+
 
 
 
