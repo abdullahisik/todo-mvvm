@@ -2,13 +2,16 @@ package com.mitoz.todo
 
 
 
-import android.app.AlarmManager
-import android.app.Notification
-import android.app.PendingIntent
+import android.annotation.SuppressLint
+import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.widget.RemoteViews
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
@@ -37,8 +40,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var rvAdapter: AdaptersRecAdaptor
     lateinit var viewModel: ViewModelsViewModel
+    lateinit var notificationManager: NotificationManager
+    lateinit var notificationChannel: NotificationChannel
+    lateinit var builder: Notification.Builder
+    private val channelId = "i.apps.notifications"
+    private val description = "Test notification"
 
-
+    @SuppressLint("RemoteViewLayout")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         StaticsContext.cntx = applicationContext
 
         db = Room.databaseBuilder(applicationContext, DatabaseAppDatabase::class.java, "todo-list.db").build()
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         db.todoDao().findByTitle("done").observe(this,Observer{
             it?.forEach {
@@ -78,8 +87,42 @@ class MainActivity : AppCompatActivity() {
         }
         buttonToolbar.setOnClickListener {
 
+
+            val mIntent = Intent(this, MainActivity::class.java)
+
+            val pendingIntent = PendingIntent.getActivity(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+            val contentView = RemoteViews(packageName, R.layout.activity_after_notification)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                notificationChannel = NotificationChannel(channelId, description, NotificationManager.IMPORTANCE_HIGH)
+                notificationChannel.enableLights(true)
+                notificationChannel.lightColor = Color.GREEN
+                notificationChannel.enableVibration(false)
+                notificationManager.createNotificationChannel(notificationChannel)
+
+                builder = Notification.Builder(this, channelId)
+                    .setContent(contentView)
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_background))
+                    .setContentIntent(pendingIntent)
+            } else {
+
+                builder = Notification.Builder(this)
+                    .setContent(contentView)
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_background))
+                    .setContentIntent(pendingIntent)
+            }
+            notificationManager.notify(1234, builder.build())
+
+
+
+
+
             val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
          startActivity(intent)
+
         }
         val language1 = ModelsModel(
             0,
@@ -99,7 +142,6 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
         viewModel.taskList.observe(this, Observer {
 
-getNotification("selam",applicationContext)
          it?.forEach {
                 todosList.add(it)
             }
@@ -111,35 +153,15 @@ getNotification("selam",applicationContext)
 
             println("VİEW MODEL TASK LİST OBSERVE")
 
-           // rvAdapter.notifyDataSetChanged()
+
 
 
 
         })
     }
-}
-
-
-private fun scheduleNotification(notification: Notification, delay: Int) {
-    val notificationIntent = Intent(StaticsContext.cntx, AlarmNotificationReciever::class.java)
-    notificationIntent.putExtra(AlarmNotificationReciever.NOTIFICATION_ID, 1)
-    notificationIntent.putExtra(AlarmNotificationReciever.NOTIFICATION, notification)
-    val pendingIntent =
-        PendingIntent.getBroadcast(StaticsContext.cntx, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-    val futureInMillis = SystemClock.elapsedRealtime() + delay
-    val alarmManager = StaticsContext.cntx.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-    alarmManager!![AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
 
 }
 
-private fun getNotification(content: String, cntx : Context): Notification? {
-    val builder = Notification.Builder(cntx)
-    builder.setContentTitle("Scheduled Notification")
-    builder.setContentText(content)
-    builder.setSmallIcon(R.drawable.ic_launcher_background)
-
-    return builder.build()
-}
 
 
 //private fun accesText() {
