@@ -77,25 +77,27 @@ buttonBrowseFiles.setOnClickListener(){
             println(calendarMilis.toString())
           //  getNotification("5 second delay","1.1")?.let { it1 -> scheduleNotification(it1, 5000, };
             if (inputTitle.isNullOrEmpty() or inputDesction.isNullOrEmpty()) {
-                
+                Toast.makeText(this,"Görev ismi ve açıklama girmek zorunludur !",Toast.LENGTH_LONG).show()
             // alerts the user to fill in their number!
-        }
-            GlobalScope.launch {
-                db.todoDao().insertAll(
-                    ModelsEntity(
-                        0,
-                        inputTitle,
-                        inputDesction,
-                        calendarMilis,
-                        imageUri.toString(),0,"not"
+        } else {
+                GlobalScope.launch {
+                    db.todoDao().insertAll(
+                        ModelsEntity(
+                            0,
+                            inputTitle,
+                            inputDesction,
+                            calendarMilis,
+                            imageUri.toString(),0,"not"
+                        )
                     )
-                )
 
 
+                }
+
+                val intent = Intent(applicationContext,MainActivity::class.java)
+                startActivity(intent)
             }
 
-            val intent = Intent(applicationContext,MainActivity::class.java)
-            startActivity(intent)
 
 
 
