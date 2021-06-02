@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.widget.RemoteViews
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +27,6 @@ import com.mitoz.todo.statics.StaticsContext
 import com.mitoz.todo.ui.UiTodoEntryActivity
 import com.mitoz.todo.viewmodels.ViewModelsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.coroutines.coroutineContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -87,34 +85,8 @@ class MainActivity : AppCompatActivity() {
         }
         buttonToolbar.setOnClickListener {
 
-
-            val mIntent = Intent(this, MainActivity::class.java)
-
-            val pendingIntent = PendingIntent.getActivity(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-            val contentView = RemoteViews(packageName, R.layout.activity_after_notification)
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                notificationChannel = NotificationChannel(channelId, description, NotificationManager.IMPORTANCE_HIGH)
-                notificationChannel.enableLights(true)
-                notificationChannel.lightColor = Color.GREEN
-                notificationChannel.enableVibration(false)
-                notificationManager.createNotificationChannel(notificationChannel)
-
-                builder = Notification.Builder(this, channelId)
-                    .setContent(contentView)
-                    .setSmallIcon(R.drawable.ic_launcher_background)
-                    .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_background))
-                    .setContentIntent(pendingIntent)
-            } else {
-
-                builder = Notification.Builder(this)
-                    .setContent(contentView)
-                    .setSmallIcon(R.drawable.ic_launcher_background)
-                    .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_background))
-                    .setContentIntent(pendingIntent)
-            }
-            notificationManager.notify(1234, builder.build())
+            getNotification("5 second delay","1.1")?.let { it1 -> scheduleNotification(it1, 5000,1) };
+            getNotification("5 second delay","2.2")?.let { it2 -> scheduleNotification(it2, 10000,2) };
 
 
 
@@ -159,7 +131,51 @@ class MainActivity : AppCompatActivity() {
 
         })
     }
+    private fun scheduleNotification(notification: Notification, delay: Int,flag : Int) {
+        val notificationIntent = Intent(this, AlarmNotificationReciever::class.java)
+        notificationIntent.putExtra(AlarmNotificationReciever.NOTIFICATION_ID, 1)
+        notificationIntent.putExtra(AlarmNotificationReciever.NOTIFICATION, notification)
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            0,
+            notificationIntent,
+            flag
+        )
+        val futureInMillis = SystemClock.elapsedRealtime() + delay
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
+    }
+    private fun getNotification(content: String,id : String): Notification? {
+        val mIntent = Intent(this, MainActivity::class.java)
 
+        val pendingIntent = PendingIntent.getActivity(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val contentView = RemoteViews(packageName, R.layout.activity_after_notification)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationChannel = NotificationChannel(id, description, NotificationManager.IMPORTANCE_HIGH)
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.GREEN
+            notificationChannel.enableVibration(false)
+            notificationManager.createNotificationChannel(notificationChannel)
+
+            builder = Notification.Builder(this, id)
+                .setContent(contentView)
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_background))
+                .setContentIntent(pendingIntent)
+        } else {
+
+            builder = Notification.Builder(this)
+                .setContent(contentView)
+                .setSmallIcon(R.drawable.ic_launcher_background)
+                .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_background))
+                .setContentIntent(pendingIntent)
+        }
+       // notificationManager.notify(1234, builder.build())
+
+        return builder.build()
+    }
 }
 
 
