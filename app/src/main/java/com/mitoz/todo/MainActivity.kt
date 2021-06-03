@@ -2,10 +2,12 @@ package com.mitoz.todo
 
 
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
@@ -13,6 +15,8 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.widget.RemoteViews
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,13 +26,15 @@ import com.mitoz.todo.alarm.AlarmNotificationReciever
 import com.mitoz.todo.database.DatabaseAppDatabase
 import com.mitoz.todo.databinding.ActivityMainBinding
 import com.mitoz.todo.models.ModelsEntity
-import com.mitoz.todo.models.ModelsModel
 import com.mitoz.todo.statics.StaticsContext
+import com.mitoz.todo.statics.StaticsContext.context
 import com.mitoz.todo.ui.UiTodoEntryActivity
 import com.mitoz.todo.viewmodels.ViewModelsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import permissions.dispatcher.RuntimePermissions
 
 
+@RuntimePermissions
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
@@ -43,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var builder: Notification.Builder
     private val channelId = "i.apps.notifications"
     private val description = "Test notification"
+    private val STORAGE_PERMISSION_CODE = 101
 
     @SuppressLint("RemoteViewLayout")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +62,8 @@ class MainActivity : AppCompatActivity() {
 
         db = Room.databaseBuilder(applicationContext, DatabaseAppDatabase::class.java, "todo-list.db").build()
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+setupPermissions()
 
         db.todoDao().findByTitle("done").observe(this,Observer{
             it?.forEach {
@@ -136,6 +145,7 @@ class MainActivity : AppCompatActivity() {
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
     }
+
     private fun getNotification(content: String,id : String): Notification? {
         val mIntent = Intent(this, MainActivity::class.java)
 
@@ -166,6 +176,36 @@ class MainActivity : AppCompatActivity() {
       // notificationManager.notify(1234, builder.build())
 
         return builder.build()
+    }
+    private fun setupPermissions() {
+        val permission = ContextCompat.checkSelfPermission(this,
+            Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+
+                makeRequest()
+            }
+        }
+    }
+
+    private fun makeRequest() {
+        ActivityCompat.requestPermissions(this,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            STORAGE_PERMISSION_CODE)
+    }
+    @SuppressLint("NeedOnRequestPermissionsResult")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            STORAGE_PERMISSION_CODE -> {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                setupPermissions()
+                } else {
+
+                }
+            }
+        }
     }
 }
 
