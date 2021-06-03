@@ -39,7 +39,7 @@ class UiTodoEntryActivity : AppCompatActivity() {
     lateinit var notificationManager: NotificationManager
     lateinit var notificationChannel: NotificationChannel
     lateinit var builder: Notification.Builder
-    private val channelId = "i.apps.notifications21"
+    private val channelId = "1.1"
     private val description = "deneme"
     private var calendarMilis : Int = 0
     val c = Calendar.getInstance()

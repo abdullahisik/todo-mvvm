@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,12 +17,17 @@
         android:layout_height="match_parent">
 
         <!--Text view for showing the language name-->
+
+        <!--This is the layout "expanded_view" we will
+            hide initially and show as expanded
+            layout when user clicks on any of the item-->
+
         <TextView
             android:id="@+id/tv_lang_name"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="145dp"
+            android:layout_height="23dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
             android:text="Language"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="20sp"
@@ -29,28 +35,33 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--This is the layout "expanded_view" we will
-            hide initially and show as expanded
-            layout when user clicks on any of the item-->
         <RelativeLayout
             android:id="@+id/expanded_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_lang_name">
+            app:layout_constraintTop_toBottomOf="@+id/tv_description">
 
-            <!--It has a text view which we will use in our case as
-                a description text for the languages-->
-            <TextView
-                android:id="@+id/tv_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="Description Text"
-                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageView_expand"
+                android:layout_width="391dp"
+                android:layout_height="117dp"
+                app:srcCompat="@drawable/background_shape" />
+
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_description"
+            android:layout_width="236dp"
+            android:layout_height="23dp"
+            android:text="Description Text"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_lang_name"
+            tools:layout_editor_absoluteX="4dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
