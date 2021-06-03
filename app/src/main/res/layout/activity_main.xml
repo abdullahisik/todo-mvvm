@@ -11,7 +11,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F5F8FD">
+    android:background="#F5F8FD"
+        android:id="@+id/not_constraint"
+        >
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -48,7 +50,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
 
@@ -57,4 +59,22 @@
         tools:layout_editor_absoluteX="0dp"
         tools:listitem="@layout/single_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F5F8FD">
+       <!--Add recycler view to main activity-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_list_done"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/not_constraint"
+            app:layout_constraintVertical_bias="0"
+            tools:layout_editor_absoluteX="0dp"
+            tools:listitem="@layout/single_item"
+            tools:ignore="NotSibling" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

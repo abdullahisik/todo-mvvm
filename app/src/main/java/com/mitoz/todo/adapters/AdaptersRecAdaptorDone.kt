@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mitoz.todo.databinding.SingleItemBinding
 import com.mitoz.todo.models.ModelsEntity
 
-class AdaptersRecAdaptor(
+class AdaptersRecAdaptorDone(
     private var todosList : List<ModelsEntity>
-) : RecyclerView.Adapter<AdaptersRecAdaptor.ViewHolder>() {
+) : RecyclerView.Adapter<AdaptersRecAdaptorDone.ViewHolder>() {
 
 
     inner class ViewHolder(val binding: SingleItemBinding) : RecyclerView.ViewHolder(binding.root)
@@ -35,7 +35,7 @@ class AdaptersRecAdaptor(
                 binding.textViewdateTime.text = this.datetime
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
                 binding.cardLayout.setOnClickListener {
-                    TODO("BURDA NESNEYİ UPDATE ETMELİ YA DA SİLMELİSİN TŞKRLER")
+                    TODO("buralar pasif")
                     this.expand = convertBooleanToInt(expand)
                     notifyDataSetChanged()
                 }
