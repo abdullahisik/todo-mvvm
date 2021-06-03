@@ -1,6 +1,7 @@
 package com.mitoz.todo.ui
 
 import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -16,22 +17,17 @@ import android.widget.ImageView
 import android.widget.RemoteViews
 import android.widget.TimePicker
 import android.widget.Toast
-import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.room.Room
 import com.mitoz.todo.MainActivity
 import com.mitoz.todo.R
-import com.mitoz.todo.adapters.AdaptersRecAdaptor
 import com.mitoz.todo.alarm.AlarmNotificationReciever
 import com.mitoz.todo.database.DatabaseAppDatabase
 import com.mitoz.todo.models.ModelsEntity
-import com.mitoz.todo.statics.StaticsContext
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_ui_todo_entry.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
-import kotlin.time.milliseconds
+
 
 class UiTodoEntryActivity : AppCompatActivity() {
 
@@ -43,7 +39,7 @@ class UiTodoEntryActivity : AppCompatActivity() {
     lateinit var notificationManager: NotificationManager
     lateinit var notificationChannel: NotificationChannel
     lateinit var builder: Notification.Builder
-    private val channelId = "i.apps.notifications"
+    private val channelId = "i.apps.notifications21"
     private val description = "deneme"
     private var calendarMilis : Int = 0
     val c = Calendar.getInstance()
@@ -59,7 +55,7 @@ class UiTodoEntryActivity : AppCompatActivity() {
 
         }
         db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
-
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 
 
@@ -75,11 +71,19 @@ buttonBrowseFiles.setOnClickListener(){
             val inputDesction = textinputDescription.editText?.text.toString()
             calendarMilis = c.timeInMillis.toInt() - System.currentTimeMillis().toInt()
             println(calendarMilis.toString())
-          //  getNotification("5 second delay","1.1")?.let { it1 -> scheduleNotification(it1, 5000, };
-            if (inputTitle.isNullOrEmpty() or inputDesction.isNullOrEmpty()) {
+
+            if (inputTitle.isNullOrEmpty() and inputDesction.isNullOrEmpty()) {
                 Toast.makeText(this,"Görev ismi ve açıklama girmek zorunludur !",Toast.LENGTH_LONG).show()
-            // alerts the user to fill in their number!
+
+
+                // alerts the user to fill in their number!
         } else {
+                if(calendarMilis>0)
+                {
+                    getNotification("5 second delay","1.1.2")?.let { it1 -> scheduleNotification(it1, calendarMilis,calendarMilis)};
+                } else {
+                    calendarMilis = 0
+                }
                 GlobalScope.launch {
                     db.todoDao().insertAll(
                         ModelsEntity(
@@ -89,28 +93,11 @@ buttonBrowseFiles.setOnClickListener(){
                             calendarMilis,
                             imageUri.toString(),0,"not"
                         )
-                    )
-
-
+                    )}
+//                val intent = Intent(applicationContext,MainActivity::class.java)
+//                startActivity(intent)
                 }
-
-                val intent = Intent(applicationContext,MainActivity::class.java)
-                startActivity(intent)
-            }
-
-
-
-
         }
-
-
-
-
-
-
-
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -173,7 +160,7 @@ mTimePicker.show()
         alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
     }
     private fun getNotification(content: String,id : String): Notification? {
-        val mIntent = Intent(this, MainActivity::class.java)
+        val mIntent = Intent(this, UiTodoEntryActivity::class.java)
 
         val pendingIntent = PendingIntent.getActivity(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
@@ -189,7 +176,7 @@ mTimePicker.show()
             builder = Notification.Builder(this, id)
                 .setContent(contentView)
                 .setSmallIcon(R.drawable.ic_launcher_background)
-                .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_background))
+                .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_foreground))
                 .setContentIntent(pendingIntent)
         } else {
 

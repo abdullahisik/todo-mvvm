@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         }
         buttonToolbar.setOnClickListener {
 
-            getNotification("5 second delay","1.1")?.let { it1 -> scheduleNotification(it1, 5000,1) };
+            //getNotification("5 second delay","1.1")?.let { it1 -> scheduleNotification(it1, 5000,1) };
 
 
 
@@ -96,11 +96,7 @@ class MainActivity : AppCompatActivity() {
          startActivity(intent)
 
         }
-        val language1 = ModelsModel(
-            0,
-            "Java is an Object Oriented Programming language.",
-            "java is running on 3 billion devices",54651211,"uri muri",0
-        )
+
 
 
 
@@ -172,7 +168,7 @@ class MainActivity : AppCompatActivity() {
                 .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_background))
                 .setContentIntent(pendingIntent)
         }
-       // notificationManager.notify(1234, builder.build())
+      // notificationManager.notify(1234, builder.build())
 
         return builder.build()
     }
