@@ -35,7 +35,6 @@ class AdaptersRecAdaptor(
                 binding.textViewdateTime.text = this.datetime
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
                 binding.cardLayout.setOnClickListener {
-                    TODO("BURDA NESNEYİ UPDATE ETMELİ YA DA SİLMELİSİN TŞKRLER")
                     this.expand = convertBooleanToInt(expand)
                     notifyDataSetChanged()
                 }

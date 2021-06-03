@@ -43,7 +43,6 @@ class AdaptersRecAdaptorDone(
                     val msg = "You have " + (if (isChecked) "checked" else "unchecked") + " this Check it Checkbox."
                     println(msg)
                 }
-
             }
         }
     }
