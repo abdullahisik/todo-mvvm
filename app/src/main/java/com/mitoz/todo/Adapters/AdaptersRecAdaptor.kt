@@ -18,12 +18,13 @@ class AdaptersRecAdaptor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = SingleItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
         binding.checkBoxNot?.setOnCheckedChangeListener { buttonView, isChecked ->
             val msg = "You have " + (if (isChecked) "checked" else "unchecked") + " this Check it Checkbox."
-            Toast.makeText(parent.context, msg, Toast.LENGTH_SHORT).show()
+                println(msg)
         }
 
+
+        return ViewHolder(binding)
     }
 
 
@@ -34,8 +35,10 @@ class AdaptersRecAdaptor(
                 binding.tvLangName.text = this.title
                 binding.tvDescription.text = this.description
                 binding.imageViewExpand.setImageURI(Uri.parse(this.photograph))
+                binding.textViewdateTime.text = this.datetime
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
                 binding.cardLayout.setOnClickListener {
+                    TODO("BURDA NESNEYİ UPDATE ETMELİ YA DA SİLMELİSİN TŞKRLER")
                     this.expand = convertBooleanToInt(expand)
                     notifyDataSetChanged()
                 }

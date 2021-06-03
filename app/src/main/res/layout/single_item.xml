@@ -47,8 +47,12 @@
 
             <ImageView
                 android:id="@+id/imageView_expand"
-                android:layout_width="391dp"
-                android:layout_height="117dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="35dp"
+                android:layout_marginEnd="9dp"
                 app:srcCompat="@drawable/background_shape" />
 
         </RelativeLayout>
@@ -68,6 +72,24 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewdateTime"
+            android:layout_width="62dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="37dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_down_chevron" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

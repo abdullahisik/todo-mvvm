@@ -43,6 +43,9 @@ class UiTodoEntryActivity : AppCompatActivity() {
     private val description = "deneme"
     private var calendarMilis : Int = 0
     val c = Calendar.getInstance()
+    private var dateStr : String = ""
+    private var timeStr : String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ui_todo_entry)
@@ -98,7 +101,7 @@ buttonBrowseFiles.setOnClickListener(){
                             inputTitle,
                             inputDesction,
                             calendarMilis,
-                            imageUri.toString(),0,"not"
+                            imageUri.toString(),0,"not",dateStr+timeStr
                         )
                     )}
                 val intent = Intent(applicationContext,MainActivity::class.java)
@@ -128,9 +131,10 @@ private fun sheduleDate() {
     val day = c.get(Calendar.DAY_OF_MONTH)
     val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
         // Display Selected date in TextView
-        val date = "" + dayOfMonth.toString() + ", " + month.toString() + ", " + year.toString()
+        val date = "" + dayOfMonth.toString() + "." + month.toString() + "." + year.toString()
 
         textinputSchedule.editText?.text =  date.toEditable()
+        dateStr = date.toString()
     }, year, month, day)
     dpd.datePicker.minDate = System.currentTimeMillis()
     dpd.show()
@@ -149,6 +153,8 @@ private fun sheduleDate() {
                 c.set(Calendar.MINUTE, minute);
                 val time = hourOfDay.toString()+":"+minute.toString()
                 textinputTime.editText?.text = time.toEditable()
+                timeStr = time.toString()
+
             }
         }, hour, minute, true)
 
