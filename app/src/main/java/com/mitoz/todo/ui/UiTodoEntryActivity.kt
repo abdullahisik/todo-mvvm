@@ -72,7 +72,7 @@ buttonBrowseFiles.setOnClickListener(){
         buttonToolbarEntry.setOnClickListener {
 
             val inputTitle = textinpuTitle.editText?.text.toString()
-            val inputDesction = textinpuTitle.editText?.text.toString()
+            val inputDesction = textinputDescription.editText?.text.toString()
             calendarMilis = c.timeInMillis.toInt() - System.currentTimeMillis().toInt()
             println(calendarMilis.toString())
           //  getNotification("5 second delay","1.1")?.let { it1 -> scheduleNotification(it1, 5000, };
