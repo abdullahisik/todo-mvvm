@@ -35,7 +35,6 @@ class AdaptersRecAdaptorDone(
                 binding.textViewdateTime.text = this.datetime
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
                 binding.cardLayout.setOnClickListener {
-                    TODO("buralar pasif")
                     this.expand = convertBooleanToInt(expand)
                     notifyDataSetChanged()
                 }

@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.mitoz.todo.adapters.AdaptersRecAdaptor
+import com.mitoz.todo.adapters.AdaptersRecAdaptorDone
 import com.mitoz.todo.alarm.AlarmNotificationReciever
 import com.mitoz.todo.database.DatabaseAppDatabase
 import com.mitoz.todo.databinding.ActivityMainBinding
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     private var todosList = ArrayList<ModelsEntity>()
 
     private lateinit var rvAdapter: AdaptersRecAdaptor
-
+    private lateinit var rvAdapterDone : AdaptersRecAdaptorDone
     lateinit var viewModel: ViewModelsViewModel
     lateinit var notificationManager: NotificationManager
     lateinit var notificationChannel: NotificationChannel
@@ -85,6 +86,9 @@ class MainActivity : AppCompatActivity() {
                 rvAdapter = AdaptersRecAdaptor(todosList)
                 binding.rvList.adapter = rvAdapter
                 rvAdapter.notifyDataSetChanged()
+            rvAdapterDone = AdaptersRecAdaptorDone(todosList)
+            binding.rvListDone.adapter = rvAdapterDone
+            rvAdapterDone.notifyDataSetChanged()
             println("VİEW MODEL TASK LİST OBSERVE")
         })
     }
