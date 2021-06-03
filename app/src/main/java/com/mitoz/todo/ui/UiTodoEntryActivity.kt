@@ -69,18 +69,25 @@ buttonBrowseFiles.setOnClickListener(){
 
             val inputTitle = textinpuTitle.editText?.text.toString()
             val inputDesction = textinputDescription.editText?.text.toString()
-            calendarMilis = c.timeInMillis.toInt() - System.currentTimeMillis().toInt()
+
+
             println(calendarMilis.toString())
 
-            if (inputTitle.isNullOrEmpty() and inputDesction.isNullOrEmpty()) {
+            if (inputTitle.isNullOrEmpty() or inputDesction.isNullOrEmpty()) {
                 Toast.makeText(this,"Görev ismi ve açıklama girmek zorunludur !",Toast.LENGTH_LONG).show()
 
 
                 // alerts the user to fill in their number!
         } else {
-                if(calendarMilis>0)
-                {
-                    getNotification("5 second delay","1.1.2")?.let { it1 -> scheduleNotification(it1, calendarMilis,calendarMilis)};
+                if (calendarMilis > 0 and c.timeInMillis.toInt() != null) {
+                    calendarMilis = c.timeInMillis.toInt() - System.currentTimeMillis().toInt()
+                    getNotification("notify", "1.1.2")?.let { it1 ->
+                        scheduleNotification(
+                            it1,
+                            calendarMilis,
+                            calendarMilis
+                        )
+                    };
                 } else {
                     calendarMilis = 0
                 }
@@ -94,11 +101,13 @@ buttonBrowseFiles.setOnClickListener(){
                             imageUri.toString(),0,"not"
                         )
                     )}
-//                val intent = Intent(applicationContext,MainActivity::class.java)
-//                startActivity(intent)
-                }
+                val intent = Intent(applicationContext,MainActivity::class.java)
+                startActivity(intent)
+            }
+            }
+
         }
-    }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
