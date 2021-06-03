@@ -1,5 +1,6 @@
 package com.mitoz.todo.adapters
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ class AdaptersRecAdaptor(
                 val expand = convertIntToBoolean(this.expand)
                 binding.tvLangName.text = this.title
                 binding.tvDescription.text = this.description
+                binding.imageViewExpand.setImageURI(Uri.parse(this.photograph))
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
                 binding.cardLayout.setOnClickListener {
                     this.expand = convertBooleanToInt(expand)

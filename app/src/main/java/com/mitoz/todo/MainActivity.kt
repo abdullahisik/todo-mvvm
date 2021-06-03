@@ -87,11 +87,6 @@ class MainActivity : AppCompatActivity() {
 
             //getNotification("5 second delay","1.1")?.let { it1 -> scheduleNotification(it1, 5000,1) };
 
-
-
-
-
-
             val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
          startActivity(intent)
 
