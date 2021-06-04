@@ -3,6 +3,7 @@ package com.mitoz.todo.models
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
+
 @Dao
 interface ModelsDao  {
 
@@ -17,6 +18,10 @@ interface ModelsDao  {
     @Delete
     fun delete(todo: ModelsEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(todo:ModelsEntity)
     @Update
     fun updateTodo(vararg todos: ModelsEntity)
+
+
 }

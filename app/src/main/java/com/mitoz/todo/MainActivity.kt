@@ -22,6 +22,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.mitoz.todo.adapters.AdaptersRecAdaptor
 import com.mitoz.todo.adapters.AdaptersRecAdaptorDone
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     private var todosListDone = ArrayList<ModelsEntity>()
 
     private lateinit var rvAdapter: AdaptersRecAdaptor
-    private lateinit var rvAdapterDone : AdaptersRecAdaptor
+    private lateinit var rvAdapterDone : AdaptersRecAdaptorDone
     lateinit var viewModel: ViewModelsViewModel
     lateinit var notificationManager: NotificationManager
     lateinit var notificationChannel: NotificationChannel
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         val heightDp = resources.displayMetrics.run { heightPixels / density }
         not_constraint.maxHeight = (heightDp/2).toInt()-25
         done_constraint.maxHeight = (heightDp/2).toInt()-25
+
         println("Yatay db : "+widthDp+" -Dikey dp : "+heightDp)
         db = Room.databaseBuilder(applicationContext, DatabaseAppDatabase::class.java, "todo-list.db").build()
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -86,6 +88,7 @@ class MainActivity : AppCompatActivity() {
         // add items to list
         rvAdapter = AdaptersRecAdaptor(todosList)
         binding.rvList.adapter = rvAdapter
+
         rvAdapter.notifyDataSetChanged()
         viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
         viewModel.taskList.observe(this, Observer {
@@ -99,7 +102,7 @@ class MainActivity : AppCompatActivity() {
                 rvAdapter = AdaptersRecAdaptor(todosList)
                 binding.rvList.adapter = rvAdapter
                 rvAdapter.notifyDataSetChanged()
-            rvAdapterDone = AdaptersRecAdaptor(todosListDone)
+            rvAdapterDone = AdaptersRecAdaptorDone(todosListDone)
             binding.rvListDone.adapter = rvAdapterDone
             rvAdapterDone.notifyDataSetChanged()
             println("VİEW MODEL TASK LİST OBSERVE")

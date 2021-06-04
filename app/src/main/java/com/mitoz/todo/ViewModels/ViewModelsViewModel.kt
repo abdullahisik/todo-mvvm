@@ -24,7 +24,6 @@ class ViewModelsViewModel  : ViewModel(){
             repository = RepositoryTodoRepository()
             val data =   repository.getAll()
             data?.forEach {
-                if(it.doneornot == "not")
                     todosList.add(it)
                 //  viewModel.taskList.value.add();
             }
