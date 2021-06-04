@@ -67,10 +67,8 @@ class MainActivity : AppCompatActivity() {
         StaticsContext.cntx = applicationContext
         val widthDp = resources.displayMetrics.run { widthPixels / density }
         val heightDp = resources.displayMetrics.run { heightPixels / density }
-        not_constraint.updateLayoutParams<ConstraintLayout.LayoutParams> {
-      TODO("BURAYA BİR BAK AGAA")
-            //add other constraints if needed
-        }
+        not_constraint.maxHeight = (heightDp/2).toInt()-25
+        done_constraint.maxHeight = (heightDp/2).toInt()-25
         println("Yatay db : "+widthDp+" -Dikey dp : "+heightDp)
         db = Room.databaseBuilder(applicationContext, DatabaseAppDatabase::class.java, "todo-list.db").build()
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
