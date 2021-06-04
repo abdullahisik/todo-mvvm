@@ -156,7 +156,7 @@ private fun sheduleDate() {
                 timeStr = time.toString()
 
             }
-        }, hour, minute, true)
+        }, hour, minute, false)
 
 mTimePicker.show()
     }

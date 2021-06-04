@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity() {
             elevation = 15F
         }
         buttonToolbar.setOnClickListener {
+
             val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
          startActivity(intent)
         }
