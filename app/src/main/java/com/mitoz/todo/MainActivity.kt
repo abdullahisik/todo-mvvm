@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     //private lateinit var todoDao: ModelsDao
     private lateinit var db: DatabaseAppDatabase
     private var todosList = ArrayList<ModelsEntity>()
+    private var todosListDone = ArrayList<ModelsEntity>()
 
     private lateinit var rvAdapter: AdaptersRecAdaptor
     private lateinit var rvAdapterDone : AdaptersRecAdaptorDone
@@ -82,12 +83,16 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
         viewModel.taskList.observe(this, Observer {
          it?.forEach {
-                todosList.add(it)
+                if(it.doneornot == "not") {
+                    todosList.add(it)
+                } else {
+                    todosListDone.add(it)
+                }
             }
                 rvAdapter = AdaptersRecAdaptor(todosList)
                 binding.rvList.adapter = rvAdapter
                 rvAdapter.notifyDataSetChanged()
-            rvAdapterDone = AdaptersRecAdaptorDone(todosList)
+            rvAdapterDone = AdaptersRecAdaptorDone(todosListDone)
             binding.rvListDone.adapter = rvAdapterDone
             rvAdapterDone.notifyDataSetChanged()
             println("VİEW MODEL TASK LİST OBSERVE")
