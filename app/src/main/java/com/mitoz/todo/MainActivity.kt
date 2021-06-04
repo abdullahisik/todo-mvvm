@@ -15,8 +15,10 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.widget.RemoteViews
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +34,7 @@ import com.mitoz.todo.statics.StaticsContext.context
 import com.mitoz.todo.ui.UiTodoEntryActivity
 import com.mitoz.todo.viewmodels.ViewModelsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.single_item.view.*
 import permissions.dispatcher.RuntimePermissions
 
 
@@ -45,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private var todosListDone = ArrayList<ModelsEntity>()
 
     private lateinit var rvAdapter: AdaptersRecAdaptor
-    private lateinit var rvAdapterDone : AdaptersRecAdaptorDone
+    private lateinit var rvAdapterDone : AdaptersRecAdaptor
     lateinit var viewModel: ViewModelsViewModel
     lateinit var notificationManager: NotificationManager
     lateinit var notificationChannel: NotificationChannel
@@ -62,7 +65,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.rvList.layoutManager = LinearLayoutManager(this)
         StaticsContext.cntx = applicationContext
-
+        val widthDp = resources.displayMetrics.run { widthPixels / density }
+        val heightDp = resources.displayMetrics.run { heightPixels / density }
+        not_constraint.updateLayoutParams<ConstraintLayout.LayoutParams> {
+      TODO("BURAYA BİR BAK AGAA")
+            //add other constraints if needed
+        }
+        println("Yatay db : "+widthDp+" -Dikey dp : "+heightDp)
         db = Room.databaseBuilder(applicationContext, DatabaseAppDatabase::class.java, "todo-list.db").build()
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         setupPermissions()
@@ -92,7 +101,7 @@ class MainActivity : AppCompatActivity() {
                 rvAdapter = AdaptersRecAdaptor(todosList)
                 binding.rvList.adapter = rvAdapter
                 rvAdapter.notifyDataSetChanged()
-            rvAdapterDone = AdaptersRecAdaptorDone(todosListDone)
+            rvAdapterDone = AdaptersRecAdaptor(todosListDone)
             binding.rvListDone.adapter = rvAdapterDone
             rvAdapterDone.notifyDataSetChanged()
             println("VİEW MODEL TASK LİST OBSERVE")
