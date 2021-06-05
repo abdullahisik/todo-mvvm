@@ -14,6 +14,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.widget.RemoteViews
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -36,6 +37,8 @@ import com.mitoz.todo.ui.UiTodoEntryActivity
 import com.mitoz.todo.viewmodels.ViewModelsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.single_item.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import permissions.dispatcher.RuntimePermissions
 
 
@@ -69,7 +72,8 @@ class MainActivity : AppCompatActivity() {
         val widthDp = resources.displayMetrics.run { widthPixels / density }
         val heightDp = resources.displayMetrics.run { heightPixels / density }
         not_constraint.maxHeight = (heightDp/2).toInt()-25
-        done_constraint.maxHeight = (heightDp/2).toInt()-25
+        //done_constraint.maxHeight = (heightDp/2).toInt()-25
+
 
         println("Yatay db : "+widthDp+" -Dikey dp : "+heightDp)
         db = Room.databaseBuilder(applicationContext, DatabaseAppDatabase::class.java, "todo-list.db").build()
@@ -82,15 +86,19 @@ class MainActivity : AppCompatActivity() {
         }
         buttonToolbar.setOnClickListener {
 
-          //  val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
-        // startActivity(intent)
+        val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
+       startActivity(intent)
         }
         // add items to list
         rvAdapter = AdaptersRecAdaptor(todosList)
         binding.rvList.adapter = rvAdapter
 
         rvAdapter.notifyDataSetChanged()
+        db.todoDao().findByTitle("done").observe(this, Observer {
+          println("OLUYOR MU")
+        })
         viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
+
         viewModel.taskList.observe(this, Observer {
          it?.forEach {
                 if(it.doneornot == "not") {
@@ -108,6 +116,8 @@ class MainActivity : AppCompatActivity() {
             println("VİEW MODEL TASK LİST OBSERVE")
         })
     }
+
+
     private fun scheduleNotification(notification: Notification, delay: Int,flag : Int) {
         val notificationIntent = Intent(this, AlarmNotificationReciever::class.java)
         notificationIntent.putExtra(AlarmNotificationReciever.NOTIFICATION_ID, 1)
@@ -154,6 +164,8 @@ class MainActivity : AppCompatActivity() {
 
         return builder.build()
     }
+
+
     private fun setupPermissions() {
         val permission = ContextCompat.checkSelfPermission(this,
             Manifest.permission.READ_EXTERNAL_STORAGE)

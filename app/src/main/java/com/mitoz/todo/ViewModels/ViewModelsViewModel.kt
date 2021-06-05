@@ -1,9 +1,6 @@
 package com.mitoz.todo.viewmodels
 
-import android.app.Application
-import android.provider.ContactsContract.CommonDataKinds.Note
-import androidx.annotation.NonNull
-import androidx.lifecycle.LiveData
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mitoz.todo.models.ModelsEntity

@@ -16,10 +16,17 @@ import com.mitoz.todo.viewmodels.ViewModelsViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class AdaptersRecAdaptor (private var todosList : List<ModelsEntity>) : RecyclerView.Adapter<AdaptersRecAdaptor.ViewHolder>()  {
+class AdaptersRecAdaptor  (private var todosList : List<ModelsEntity>) : RecyclerView.Adapter<AdaptersRecAdaptor.ViewHolder>()   {
 
-    inner class ViewHolder(val binding: SingleItemBinding) : RecyclerView.ViewHolder(binding.root)
-    var onItemClick: ((ModelsEntity) -> Unit)? = null
+    inner class ViewHolder(val binding: SingleItemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+
+
+
+        }
+
+    }
     private lateinit var db: DatabaseAppDatabase
 
 
@@ -36,9 +43,7 @@ class AdaptersRecAdaptor (private var todosList : List<ModelsEntity>) : Recycler
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder){
-                itemView.setOnClickListener {
-                    onItemClick?.invoke(todosList[adapterPosition])
-                }
+
             with(todosList[position]){
                 val expand = convertIntToBoolean(this.expand)
                 binding.tvLangName.text = this.title
@@ -60,6 +65,7 @@ class AdaptersRecAdaptor (private var todosList : List<ModelsEntity>) : Recycler
 
 
                         }
+
                         notifyDataSetChanged()
 
                     }
@@ -68,7 +74,6 @@ class AdaptersRecAdaptor (private var todosList : List<ModelsEntity>) : Recycler
             }
         }
     }
-
 
 
 
