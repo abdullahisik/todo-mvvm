@@ -82,8 +82,8 @@ class MainActivity : AppCompatActivity() {
         }
         buttonToolbar.setOnClickListener {
 
-            val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
-         startActivity(intent)
+          //  val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
+        // startActivity(intent)
         }
         // add items to list
         rvAdapter = AdaptersRecAdaptor(todosList)

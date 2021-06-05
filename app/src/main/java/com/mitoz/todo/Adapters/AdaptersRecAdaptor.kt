@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.mitoz.todo.MainActivity
 import com.mitoz.todo.database.DatabaseAppDatabase
 import com.mitoz.todo.databinding.SingleItemBinding
 import com.mitoz.todo.models.ModelsEntity
+import com.mitoz.todo.viewmodels.ViewModelsViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -19,10 +22,12 @@ class AdaptersRecAdaptor (private var todosList : List<ModelsEntity>) : Recycler
     var onItemClick: ((ModelsEntity) -> Unit)? = null
     private lateinit var db: DatabaseAppDatabase
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = SingleItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         db = Room.databaseBuilder(parent.context, DatabaseAppDatabase::class.java, "todo-list.db").build()
+
 
 
         return ViewHolder(binding)
@@ -48,14 +53,15 @@ class AdaptersRecAdaptor (private var todosList : List<ModelsEntity>) : Recycler
                 binding.checkBoxNot?.setOnCheckedChangeListener { buttonView, isChecked ->
                     if (isChecked) {
                         println(todosList[position])
-                        TODO("BURDA ÇALIŞMA VAR !")
                         GlobalScope.launch {
-                            db.todoDao().insertAll(ModelsEntity(
-                                1,"serkkke","dfsdfsdf",
-                                452452,"",0,"done","sdvfvd"
+                            todosList[position].doneornot ="done"
+                            db.todoDao().updateTodo(todosList[position])
 
-                            ))
+
+
                         }
+                        notifyDataSetChanged()
+
                     }
 
                 }

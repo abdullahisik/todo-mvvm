@@ -18,10 +18,10 @@ interface ModelsDao  {
     @Delete
     fun delete(todo: ModelsEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(todo:ModelsEntity)
     @Update
     fun updateTodo(vararg todos: ModelsEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insert(todo: ModelsEntity)
 
 }
