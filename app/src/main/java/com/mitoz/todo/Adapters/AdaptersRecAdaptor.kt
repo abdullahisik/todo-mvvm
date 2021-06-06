@@ -67,14 +67,14 @@ class AdaptersRecAdaptor(private var todosList: List<ModelsEntity>)
                 binding.imageViewExpand.setImageURI(Uri.parse(this.photograph))
                 binding.textViewdateTime.text = this.datetime
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
-                binding.cardLayout.setOnClickListener {
-
+                binding.imageView2.bringToFront()
+                binding.imageView2.setOnClickListener { view ->
                     this.expand = convertBooleanToInt(expand)
                     notifyDataSetChanged()
-               }
+                }
                 holder.itemView.setOnClickListener() {
 
-
+println("itemview")
 
                 }
                 binding.checkBoxNot?.setOnCheckedChangeListener { buttonView, isChecked ->

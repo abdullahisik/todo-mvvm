@@ -1,8 +1,6 @@
 package com.mitoz.todo.adapters
 
-import android.R.attr.key
-import android.R.attr.value
-import android.app.Activity
+
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -67,16 +65,13 @@ class AdaptersRecAdaptorDone(private var todosList: List<ModelsEntity>)
                 binding.imageViewExpand.setImageURI(Uri.parse(this.photograph))
                 binding.textViewdateTime.text = this.datetime
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
-                binding.cardLayout.setOnClickListener {
+                binding.imageView2.bringToFront()
 
+                binding.imageView2.setOnClickListener { view ->
                     this.expand = convertBooleanToInt(expand)
                     notifyDataSetChanged()
                 }
-                holder.itemView.setOnClickListener() {
 
-
-
-                }
                 binding.checkBoxNot.isChecked = true
                 binding.checkBoxNot?.setOnCheckedChangeListener { buttonView, isChecked ->
                     if (!isChecked) {
