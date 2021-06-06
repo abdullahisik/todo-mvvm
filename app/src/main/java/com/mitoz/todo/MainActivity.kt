@@ -16,14 +16,11 @@ import android.os.SystemClock
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.mitoz.todo.adapters.AdaptersRecAdaptor
 import com.mitoz.todo.adapters.AdaptersRecAdaptorDone
@@ -32,7 +29,6 @@ import com.mitoz.todo.database.DatabaseAppDatabase
 import com.mitoz.todo.databinding.ActivityMainBinding
 import com.mitoz.todo.models.ModelsEntity
 import com.mitoz.todo.statics.StaticsContext
-import com.mitoz.todo.statics.StaticsContext.context
 import com.mitoz.todo.ui.UiTodoEntryActivity
 import com.mitoz.todo.viewmodels.ViewModelsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,7 +39,7 @@ import permissions.dispatcher.RuntimePermissions
 
 
 @RuntimePermissions
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity()  {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
     //private lateinit var todoDao: ModelsDao
@@ -71,8 +67,10 @@ class MainActivity : AppCompatActivity() {
         StaticsContext.cntx = applicationContext
         val widthDp = resources.displayMetrics.run { widthPixels / density }
         val heightDp = resources.displayMetrics.run { heightPixels / density }
-        not_constraint.maxHeight = (heightDp/2).toInt()-25
+        not_constraint.maxHeight = (heightDp/2).toInt()-75
         //done_constraint.maxHeight = (heightDp/2).toInt()-25
+
+
 
 
         println("Yatay db : "+widthDp+" -Dikey dp : "+heightDp)
@@ -85,9 +83,9 @@ class MainActivity : AppCompatActivity() {
             elevation = 15F
         }
         buttonToolbar.setOnClickListener {
-
-        val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
-       startActivity(intent)
+viewModel.currentNumber.value = 50
+       val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
+      startActivity(intent)
         }
         // add items to list
         rvAdapter = AdaptersRecAdaptor(todosList)
@@ -98,7 +96,27 @@ class MainActivity : AppCompatActivity() {
           println("OLUYOR MU")
         })
         viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
+viewModel.currentNumber.observe(this, Observer {
+    println("oldu")
+   GlobalScope.launch { val data = db.todoDao().getAll()
+       data?.forEach {
+           if(it.doneornot == "not") {
+               todosList.add(it)
+           } else {
+               todosListDone.add(it)
+           }
+       }
+   }
 
+    rvAdapter = AdaptersRecAdaptor(todosList)
+    binding.rvList.adapter = rvAdapter
+
+    rvAdapter.notifyDataSetChanged()
+
+    rvAdapterDone = AdaptersRecAdaptorDone(todosListDone)
+    binding.rvListDone.adapter = rvAdapterDone
+    rvAdapterDone.notifyDataSetChanged()
+})
         viewModel.taskList.observe(this, Observer {
          it?.forEach {
                 if(it.doneornot == "not") {
@@ -109,7 +127,9 @@ class MainActivity : AppCompatActivity() {
             }
                 rvAdapter = AdaptersRecAdaptor(todosList)
                 binding.rvList.adapter = rvAdapter
+
                 rvAdapter.notifyDataSetChanged()
+
             rvAdapterDone = AdaptersRecAdaptorDone(todosListDone)
             binding.rvListDone.adapter = rvAdapterDone
             rvAdapterDone.notifyDataSetChanged()

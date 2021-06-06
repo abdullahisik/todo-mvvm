@@ -53,7 +53,7 @@ class ViewModelsViewModel  : ViewModel(){
 
 
 
-    var number = 0
+    val number = 0
     
         val currentNumber: MutableLiveData<Int> by lazy {
         MutableLiveData<Int>()

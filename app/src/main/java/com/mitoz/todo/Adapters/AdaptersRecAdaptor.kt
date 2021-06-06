@@ -1,11 +1,19 @@
 package com.mitoz.todo.adapters
 
+import android.R.attr.key
+import android.R.attr.value
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.mitoz.todo.MainActivity
@@ -13,18 +21,27 @@ import com.mitoz.todo.database.DatabaseAppDatabase
 import com.mitoz.todo.databinding.SingleItemBinding
 import com.mitoz.todo.models.ModelsEntity
 import com.mitoz.todo.viewmodels.ViewModelsViewModel
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class AdaptersRecAdaptor  (private var todosList : List<ModelsEntity>) : RecyclerView.Adapter<AdaptersRecAdaptor.ViewHolder>()   {
+
+class AdaptersRecAdaptor(private var todosList: List<ModelsEntity>)
+    : RecyclerView.Adapter<AdaptersRecAdaptor.ViewHolder>(), ViewModelStoreOwner {
+    private lateinit var rvAdapter: AdaptersRecAdaptor
+    private val mContext: Context? = null
+
+    lateinit var viewModel: ViewModelsViewModel
 
     inner class ViewHolder(val binding: SingleItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         init {
 
 
-
         }
+
+
+
 
     }
     private lateinit var db: DatabaseAppDatabase
@@ -32,7 +49,7 @@ class AdaptersRecAdaptor  (private var todosList : List<ModelsEntity>) : Recycle
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = SingleItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-
+        viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
         db = Room.databaseBuilder(parent.context, DatabaseAppDatabase::class.java, "todo-list.db").build()
 
 
@@ -43,7 +60,6 @@ class AdaptersRecAdaptor  (private var todosList : List<ModelsEntity>) : Recycle
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder){
-
             with(todosList[position]){
                 val expand = convertIntToBoolean(this.expand)
                 binding.tvLangName.text = this.title
@@ -52,24 +68,39 @@ class AdaptersRecAdaptor  (private var todosList : List<ModelsEntity>) : Recycle
                 binding.textViewdateTime.text = this.datetime
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
                 binding.cardLayout.setOnClickListener {
+
                     this.expand = convertBooleanToInt(expand)
                     notifyDataSetChanged()
+               }
+                holder.itemView.setOnClickListener() {
+
+                    val intent = Intent(it.context, MainActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putString("deneme", "deneme")
+                    intent.putExtras(bundle)
+
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    System.runFinalization()
+                    Runtime.getRuntime().gc()
+                    System.gc()
+                    startActivity(it.context, intent,bundle)
+
                 }
                 binding.checkBoxNot?.setOnCheckedChangeListener { buttonView, isChecked ->
                     if (isChecked) {
+                        viewModel.currentNumber.value = 5
                         println(todosList[position])
                         GlobalScope.launch {
                             todosList[position].doneornot ="done"
                             db.todoDao().updateTodo(todosList[position])
 
 
-
                         }
 
                         notifyDataSetChanged()
-
                     }
-
                 }
             }
         }
@@ -81,6 +112,9 @@ class AdaptersRecAdaptor  (private var todosList : List<ModelsEntity>) : Recycle
     override fun getItemCount(): Int {
         return todosList.size
     }
+
+
+
     private fun convertIntToBoolean(int : Int) : Boolean{
         if(int == 0) {
             return false
@@ -95,4 +129,9 @@ class AdaptersRecAdaptor  (private var todosList : List<ModelsEntity>) : Recycle
             return 1
         }
     }
+
+    override fun getViewModelStore(): ViewModelStore {
+        return ViewModelStore()
+    }
+
 }
