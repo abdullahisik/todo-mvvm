@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity()  {
             elevation = 15F
         }
         buttonToolbar.setOnClickListener {
-viewModel.currentNumber.value = 50
+
        val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)
       startActivity(intent)
         }

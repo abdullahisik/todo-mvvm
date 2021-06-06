@@ -115,6 +115,8 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
             android:onClick="onclickSheduleDate"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -142,7 +144,8 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="15dp"
             android:onClick="onclickTime"
-
+            android:focusable="false"
+            android:focusableInTouchMode="true"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
