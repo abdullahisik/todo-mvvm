@@ -74,18 +74,7 @@ class AdaptersRecAdaptor(private var todosList: List<ModelsEntity>)
                }
                 holder.itemView.setOnClickListener() {
 
-                    val intent = Intent(it.context, MainActivity::class.java)
-                    val bundle = Bundle()
-                    bundle.putString("deneme", "deneme")
-                    intent.putExtras(bundle)
 
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    System.runFinalization()
-                    Runtime.getRuntime().gc()
-                    System.gc()
-                    startActivity(it.context, intent,bundle)
 
                 }
                 binding.checkBoxNot?.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -98,7 +87,18 @@ class AdaptersRecAdaptor(private var todosList: List<ModelsEntity>)
 
 
                         }
+                        val intent = Intent(buttonView.context, MainActivity::class.java)
+                        val bundle = Bundle()
+                        bundle.putString("deneme", "deneme")
+                        intent.putExtras(bundle)
 
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        System.runFinalization()
+                        Runtime.getRuntime().gc()
+                        System.gc()
+                        startActivity(buttonView.context, intent,bundle)
                         notifyDataSetChanged()
                     }
                 }
