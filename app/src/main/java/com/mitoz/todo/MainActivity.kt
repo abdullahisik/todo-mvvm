@@ -13,6 +13,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.view.View
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -70,7 +71,12 @@ class MainActivity : AppCompatActivity()  {
         not_constraint.maxHeight = (heightDp/2).toInt()-75
         //done_constraint.maxHeight = (heightDp/2).toInt()-25
 
+        rvAdapter = AdaptersRecAdaptor(todosList, View.OnClickListener {
 
+            println("activity hoşgeldiniz")
+
+
+        })
 
 
         println("Yatay db : "+widthDp+" -Dikey dp : "+heightDp)
@@ -88,7 +94,7 @@ class MainActivity : AppCompatActivity()  {
       startActivity(intent)
         }
         // add items to list
-        rvAdapter = AdaptersRecAdaptor(todosList)
+
         binding.rvList.adapter = rvAdapter
 
         rvAdapter.notifyDataSetChanged()
@@ -108,7 +114,9 @@ viewModel.currentNumber.observe(this, Observer {
        }
    }
 
-    rvAdapter = AdaptersRecAdaptor(todosList)
+    rvAdapter = AdaptersRecAdaptor(todosList,View.OnClickListener {
+
+    })
     binding.rvList.adapter = rvAdapter
 
     rvAdapter.notifyDataSetChanged()
@@ -125,9 +133,11 @@ viewModel.currentNumber.observe(this, Observer {
                     todosListDone.add(it)
                 }
             }
-                rvAdapter = AdaptersRecAdaptor(todosList)
-                binding.rvList.adapter = rvAdapter
 
+                rvAdapter = AdaptersRecAdaptor(todosList,View.OnClickListener {
+
+                })
+                binding.rvList.adapter = rvAdapter
                 rvAdapter.notifyDataSetChanged()
 
             rvAdapterDone = AdaptersRecAdaptorDone(todosListDone)

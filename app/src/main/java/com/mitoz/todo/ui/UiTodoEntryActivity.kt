@@ -173,6 +173,7 @@ mTimePicker.show()
         val futureInMillis = SystemClock.elapsedRealtime() + delay
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
+
     }
     private fun getNotification(content: String,id : String): Notification? {
         val mIntent = Intent(this, UiTodoEntryActivity::class.java)
