@@ -23,5 +23,6 @@ interface ModelsDao  {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(todo: ModelsEntity)
-
+    @Query("SELECT * FROM todo_items WHERE Id LIKE :mId")
+    fun getItem(mId : Int): ModelsEntity
 }

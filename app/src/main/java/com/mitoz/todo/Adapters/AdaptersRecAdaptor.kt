@@ -22,6 +22,7 @@ import com.mitoz.todo.database.DatabaseAppDatabase
 import com.mitoz.todo.databinding.SingleItemBinding
 import com.mitoz.todo.models.ModelsEntity
 import com.mitoz.todo.statics.StaticsContext.context
+import com.mitoz.todo.ui.UiTodoEntryActivity
 import com.mitoz.todo.viewmodels.ViewModelsViewModel
 import kotlinx.android.synthetic.main.single_item.view.*
 import kotlinx.coroutines.GlobalScope
@@ -68,7 +69,7 @@ class AdaptersRecAdaptor(private var todosList: List<ModelsEntity>,callback : Vi
                 binding.tvLangName.text = this.title
                 binding.tvDescription.text = this.description
                 binding.imageViewExpand.setImageURI(Uri.parse(this.photograph))
-                binding.textViewdateTime.text = this.datetime
+                binding.textViewdateTime.text = this.date+""+this.time
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
                 binding.imageView2.bringToFront()
                 binding.imageView2.setOnClickListener { view ->
@@ -76,7 +77,17 @@ class AdaptersRecAdaptor(private var todosList: List<ModelsEntity>,callback : Vi
                     notifyDataSetChanged()
                 }
                 binding.tvLangName.bringToFront()
-                holder.itemView.tv_lang_name.setOnClickListener(mCallback)
+                holder.itemView.setOnClickListener(){
+
+                    val dintent = Intent(it.context, UiTodoEntryActivity::class.java)
+                    val bundle = Bundle()
+                    bundle.putInt("modelid",todosList[position].Id)
+                    dintent.putExtras(bundle)
+                    startActivity(it.context, dintent,bundle)
+
+TODO("BURAYA BAK")
+
+                }
 
 
                 binding.checkBoxNot?.setOnCheckedChangeListener { buttonView, isChecked ->

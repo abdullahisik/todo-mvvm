@@ -45,19 +45,43 @@ class UiTodoEntryActivity : AppCompatActivity() {
     val c = Calendar.getInstance()
     private var dateStr : String = ""
     private var timeStr : String = ""
+    private var todosList = ArrayList<ModelsEntity>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ui_todo_entry)
         imageView = findViewById(R.id.imageView)
+        db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
+        val bundle = intent.extras
 
+// performing the safety null check
+        var s:Int? = null
+
+// getting the string back
+        if (bundle == null) {
+            s = bundle!!.getInt("modelid")
+
+            GlobalScope.launch {
+                todosList.add(db.todoDao().getItem(s))
+
+            }
+            todosList?.forEach {
+                textinpuTitle.editText?.setText(it.title.toEditable())
+                textinputDescription.editText?.setText(it.description.toEditable())
+                textinputSchedule.editText?.setText(it.date.toEditable())
+                textinputTime.editText?.setText(it.time.toEditable())
+                imageView.setImageURI(Uri.parse(it.photograph))
+            }
+
+        }
         supportActionBar?.apply {
             title = "Olacak"
             elevation = 15F
 
 
         }
-        db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
+
+
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 
@@ -101,7 +125,7 @@ buttonBrowseFiles.setOnClickListener(){
                             inputTitle,
                             inputDesction,
                             calendarMilis,
-                            imageUri.toString(),0,"not",dateStr+timeStr
+                            imageUri.toString(),0,"not",dateStr,timeStr
                         )
                     )}
                 val intent = Intent(applicationContext,MainActivity::class.java)

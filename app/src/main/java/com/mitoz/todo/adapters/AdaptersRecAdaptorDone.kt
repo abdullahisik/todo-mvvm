@@ -63,7 +63,7 @@ class AdaptersRecAdaptorDone(private var todosList: List<ModelsEntity>)
                 binding.tvLangName.text = this.title
                 binding.tvDescription.text = this.description
                 binding.imageViewExpand.setImageURI(Uri.parse(this.photograph))
-                binding.textViewdateTime.text = this.datetime
+                binding.textViewdateTime.text = this.date+""+this.time
                 binding.expandedView.visibility = if (expand) View.VISIBLE else View.GONE
                 binding.imageView2.bringToFront()
 
