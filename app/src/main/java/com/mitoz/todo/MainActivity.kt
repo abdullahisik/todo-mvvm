@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity()  {
         setupPermissions()
 //        val data = db.todoDao().getAll()
        supportActionBar?.apply {
-            title = "Olacak"
+            title = "..."
             elevation = 15F
         }
         buttonToolbar.setBackgroundResource(R.drawable.ic_vector)
@@ -147,56 +147,6 @@ viewModel.currentNumber.observe(this, Observer {
             println("VİEW MODEL TASK LİST OBSERVE")
         })
     }
-
-
-    private fun scheduleNotification(notification: Notification, delay: Int,flag : Int) {
-        val notificationIntent = Intent(this, AlarmNotificationReciever::class.java)
-        notificationIntent.putExtra(AlarmNotificationReciever.NOTIFICATION_ID, 1)
-        notificationIntent.putExtra(AlarmNotificationReciever.NOTIFICATION, notification)
-        val pendingIntent = PendingIntent.getBroadcast(
-            this,
-            0,
-            notificationIntent,
-            flag
-        )
-        val futureInMillis = SystemClock.elapsedRealtime() + delay
-        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
-    }
-
-    private fun getNotification(content: String,id : String): Notification? {
-        val mIntent = Intent(this, MainActivity::class.java)
-
-        val pendingIntent = PendingIntent.getActivity(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-        val contentView = RemoteViews(packageName, R.layout.activity_after_notification)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = NotificationChannel(id, description, NotificationManager.IMPORTANCE_HIGH)
-            notificationChannel.enableLights(true)
-            notificationChannel.lightColor = Color.GREEN
-            notificationChannel.enableVibration(false)
-            notificationManager.createNotificationChannel(notificationChannel)
-
-            builder = Notification.Builder(this, id)
-                .setContent(contentView)
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_background))
-                .setContentIntent(pendingIntent)
-        } else {
-
-            builder = Notification.Builder(this)
-                .setContent(contentView)
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_background))
-                .setContentIntent(pendingIntent)
-        }
-      // notificationManager.notify(1234, builder.build())
-
-        return builder.build()
-    }
-
-
     private fun setupPermissions() {
         val permission = ContextCompat.checkSelfPermission(this,
             Manifest.permission.READ_EXTERNAL_STORAGE)
