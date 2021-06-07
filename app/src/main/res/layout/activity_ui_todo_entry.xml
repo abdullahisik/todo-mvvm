@@ -27,11 +27,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:backgroundTint="#4CAF50"
-                android:text="Ekle"
+                app:icon="@drawable/ic_okey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:iconGravity="textStart"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

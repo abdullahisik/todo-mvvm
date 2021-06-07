@@ -85,13 +85,13 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="54dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="12dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_down_chevron"
+            app:srcCompat="@drawable/ic_chevron_down"
 
             />
 
