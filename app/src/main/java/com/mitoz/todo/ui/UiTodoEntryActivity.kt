@@ -79,6 +79,8 @@ class UiTodoEntryActivity : AppCompatActivity() {
                 textinputSchedule.editText?.text = todosList[0].date.toEditable()
                 textinputTime.editText?.text = todosList[0].time.toEditable()
                 imageView.setImageURI(Uri.parse(todosList[0].photograph))
+                dateStr = todosList[0].date
+                timeStr = todosList[0].time
                 imageUri = Uri.parse(todosList[0].photograph)
             }, 200)
 
@@ -104,42 +106,58 @@ buttonBrowseFiles.setOnClickListener(){
 
 
         buttonToolbarEntry.setOnClickListener {
-
             val inputTitle = textinpuTitle.editText?.text.toString()
             val inputDesction = textinputDescription.editText?.text.toString()
-            println(calendarMilis.toString())
-            if (inputTitle.isNullOrEmpty() or inputDesction.isNullOrEmpty()) {
-                Toast.makeText(this,"Görev ismi ve açıklama girmek zorunludur !",Toast.LENGTH_LONG).show()
 
 
-                // alerts the user to fill in their number!
-        } else {
-                if (calendarMilis > 0 and c.timeInMillis.toInt() != null) {
-                    calendarMilis = c.timeInMillis.toInt() - System.currentTimeMillis().toInt()
-                    getNotification("notify", "1.1.2")?.let { it1 ->
-                        scheduleNotification(
-                            it1,
-                            calendarMilis,
-                            calendarMilis
-                        )
-                    };
+                println(calendarMilis.toString())
+                if (inputTitle.isNullOrEmpty() or inputDesction.isNullOrEmpty()) {
+                    Toast.makeText(
+                        this,
+                        "Görev ismi ve açıklama girmek zorunludur !",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    // alerts the user to fill in their number!
                 } else {
-                    calendarMilis = 0
+                    if (calendarMilis > 0 and c.timeInMillis.toInt() != null) {
+                        calendarMilis = c.timeInMillis.toInt() - System.currentTimeMillis().toInt()
+                        getNotification("notify", "1.1.2")?.let { it1 ->
+                            scheduleNotification(
+                                it1,
+                                calendarMilis,
+                                calendarMilis
+                            )
+                        };
+                    } else {
+                        calendarMilis = 0
+                    }
+                    GlobalScope.launch {
+                        if(s == null){
+                            db.todoDao().insertAll(
+                                ModelsEntity(
+                                    0,
+                                    inputTitle,
+                                    inputDesction,
+                                    calendarMilis,
+                                    imageUri.toString(), 0, "not", dateStr, timeStr
+                                )
+                            )
+                        }else {
+                            todosList[0].title = inputTitle
+                            todosList[0].description = inputDesction
+                            todosList[0].scheduleFlag = calendarMilis
+                            todosList[0].photograph = imageUri.toString()
+                            todosList[0].date = dateStr
+                            todosList[0].time = timeStr
+                            db.todoDao().updateTodo(todosList[0])
+                        }
+
+                    }
+                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(intent)
                 }
-                GlobalScope.launch {
-                    db.todoDao().insertAll(
-                        ModelsEntity(
-                            0,
-                            inputTitle,
-                            inputDesction,
-                            calendarMilis,
-                            imageUri.toString(),0,"not",dateStr,timeStr
-                        )
-                    )}
-                val intent = Intent(applicationContext,MainActivity::class.java)
-                startActivity(intent)
-            }
-            }
+        }
+
 
         }
 
