@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.os.SystemClock
 import android.provider.MediaStore
 import android.text.Editable
@@ -18,6 +19,8 @@ import android.widget.RemoteViews
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.room.Room
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.mitoz.todo.MainActivity
 import com.mitoz.todo.R
 import com.mitoz.todo.alarm.AlarmNotificationReciever
@@ -35,6 +38,7 @@ class UiTodoEntryActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
     private val pickImage = 100
     lateinit var imageView: ImageView
+    lateinit var textinputTitle: TextInputLayout
     private lateinit var db: DatabaseAppDatabase
     lateinit var notificationManager: NotificationManager
     lateinit var notificationChannel: NotificationChannel
@@ -51,27 +55,34 @@ class UiTodoEntryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ui_todo_entry)
         imageView = findViewById(R.id.imageView)
+        textinputTitle = findViewById(R.id.textinpuTitle)
         db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
+
         val bundle = intent.extras
 
 // performing the safety null check
         var s:Int? = null
 
 // getting the string back
-        if (bundle == null) {
+        if (bundle != null) {
             s = bundle!!.getInt("modelid")
 
             GlobalScope.launch {
                 todosList.add(db.todoDao().getItem(s))
 
             }
-            todosList?.forEach {
-                textinpuTitle.editText?.setText(it.title.toEditable())
-                textinputDescription.editText?.setText(it.description.toEditable())
-                textinputSchedule.editText?.setText(it.date.toEditable())
-                textinputTime.editText?.setText(it.time.toEditable())
-                imageView.setImageURI(Uri.parse(it.photograph))
-            }
+
+            val handler = Handler()
+            handler.postDelayed({
+                textinputTitle.editText?.setText(todosList[0].title.toEditable())
+                textinputDescription.editText?.text = todosList[0].description.toEditable()
+                textinputSchedule.editText?.text = todosList[0].date.toEditable()
+                textinputTime.editText?.text = todosList[0].time.toEditable()
+                imageView.setImageURI(Uri.parse(todosList[0].photograph))
+                imageUri = Uri.parse(todosList[0].photograph)
+            }, 200)
+
+
 
         }
         supportActionBar?.apply {
@@ -96,10 +107,7 @@ buttonBrowseFiles.setOnClickListener(){
 
             val inputTitle = textinpuTitle.editText?.text.toString()
             val inputDesction = textinputDescription.editText?.text.toString()
-
-
             println(calendarMilis.toString())
-
             if (inputTitle.isNullOrEmpty() or inputDesction.isNullOrEmpty()) {
                 Toast.makeText(this,"Görev ismi ve açıklama girmek zorunludur !",Toast.LENGTH_LONG).show()
 

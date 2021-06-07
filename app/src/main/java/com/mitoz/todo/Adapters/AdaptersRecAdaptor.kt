@@ -85,8 +85,6 @@ class AdaptersRecAdaptor(private var todosList: List<ModelsEntity>,callback : Vi
                     dintent.putExtras(bundle)
                     startActivity(it.context, dintent,bundle)
 
-TODO("BURAYA BAK")
-
                 }
 
 
@@ -97,9 +95,7 @@ TODO("BURAYA BAK")
                         GlobalScope.launch {
                             todosList[position].doneornot ="done"
                             db.todoDao().updateTodo(todosList[position])
-
-
-                        }
+                       }
                         val aintent = Intent(buttonView.context, AlarmNotificationReciever::class.java)
                         val pendingIntent = PendingIntent.getBroadcast(
                             buttonView.context,
@@ -108,6 +104,7 @@ TODO("BURAYA BAK")
                             todosList[position].scheduleFlag
                         )
                         val am = buttonView.context.getSystemService(ALARM_SERVICE) as AlarmManager
+                        if(pendingIntent != null)
                         am.cancel(pendingIntent)
                         val intent = Intent(buttonView.context, MainActivity::class.java)
                         val bundle = Bundle()
