@@ -88,6 +88,7 @@ class MainActivity : AppCompatActivity()  {
             title = "Olacak"
             elevation = 15F
         }
+        buttonToolbar.setBackgroundResource(R.drawable.ic_vector)
         buttonToolbar.setOnClickListener {
 
        val intent = Intent(applicationContext,UiTodoEntryActivity::class.java)

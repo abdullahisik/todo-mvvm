@@ -37,8 +37,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:backgroundTint="#4CAF50"
-                    android:text="Ekle"
+                    android:background="@drawable/ic_vector"
+                    app:icon="@drawable/ic_vector"
+                    app:iconGravity="textStart"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +58,9 @@
 
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
             tools:layout_editor_absoluteX="16dp"
-            tools:listitem="@layout/single_item" />
+            tools:listitem="@layout/single_item"
+
+            />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/done_constraint"
