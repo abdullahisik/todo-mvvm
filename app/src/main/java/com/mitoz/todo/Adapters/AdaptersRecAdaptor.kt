@@ -54,15 +54,10 @@ class AdaptersRecAdaptor(private var todosList: List<ModelsEntity>,callback : Vi
         val binding = SingleItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         viewModel = ViewModelProvider(this).get(ViewModelsViewModel::class.java)
         db = Room.databaseBuilder(parent.context, DatabaseAppDatabase::class.java, "todo-list.db").build()
-
-
-
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-
         with(holder){
             with(todosList[position]){
                 val expand = convertIntToBoolean(this.expand)
@@ -86,38 +81,34 @@ class AdaptersRecAdaptor(private var todosList: List<ModelsEntity>,callback : Vi
                     startActivity(it.context, dintent,bundle)
 
                 }
-
-
                 binding.checkBoxNot?.setOnCheckedChangeListener { buttonView, isChecked ->
                     if (isChecked) {
-                        viewModel.currentNumber.value = 5
                         println(todosList[position])
                         GlobalScope.launch {
                             todosList[position].doneornot ="done"
                             db.todoDao().updateTodo(todosList[position])
                        }
-                        val aintent = Intent(buttonView.context, AlarmNotificationReciever::class.java)
-                        val pendingIntent = PendingIntent.getBroadcast(
+                        val intentCloseAlarm = Intent(buttonView.context, AlarmNotificationReciever::class.java)
+                        val pendingIntentCloseAlarm = PendingIntent.getBroadcast(
                             buttonView.context,
                             0,
-                            aintent,
+                            intentCloseAlarm,
                             todosList[position].scheduleFlag
                         )
                         val am = buttonView.context.getSystemService(ALARM_SERVICE) as AlarmManager
-                        if(pendingIntent != null)
-                        am.cancel(pendingIntent)
-                        val intent = Intent(buttonView.context, MainActivity::class.java)
+                        if(pendingIntentCloseAlarm != null)
+                        am.cancel(pendingIntentCloseAlarm)
+                        val intentRelease = Intent(buttonView.context, MainActivity::class.java)
                         val bundle = Bundle()
-                        bundle.putString("deneme", "deneme")
-                        intent.putExtras(bundle)
-
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        bundle.putString("", "")
+                        intentRelease.putExtras(bundle)
+                        intentRelease.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        intentRelease.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        intentRelease.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         System.runFinalization()
                         Runtime.getRuntime().gc()
                         System.gc()
-                        startActivity(buttonView.context, intent,bundle)
+                        startActivity(buttonView.context, intentRelease,bundle)
                         notifyDataSetChanged()
                     }
                 }
