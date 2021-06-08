@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Alarm için "
+        android:text="Alarm çalışır gibi"
         android:textSize="15sp"
         android:textStyle="bold" />
 

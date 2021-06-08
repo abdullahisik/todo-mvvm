@@ -223,7 +223,7 @@
         />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewschedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -234,7 +234,7 @@
         app:layout_constraintVertical_bias="0.584" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textViewphotograph"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -245,7 +245,7 @@
         app:layout_constraintVertical_bias="0.575" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/textViewtime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="124dp"
@@ -258,7 +258,7 @@
         />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textViewAddTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
