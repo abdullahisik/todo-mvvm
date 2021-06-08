@@ -28,7 +28,7 @@
             android:layout_height="23dp"
             android:layout_marginTop="4dp"
             android:text="Language"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="#333333"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/checkBoxNot"
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
+            app:buttonTint="@color/colorGrayOthers"
             />
 
         <TextView

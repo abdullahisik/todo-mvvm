@@ -3,11 +3,13 @@ package com.mitoz.todo.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
@@ -15,6 +17,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.mitoz.todo.MainActivity
+import com.mitoz.todo.R
 import com.mitoz.todo.database.DatabaseAppDatabase
 import com.mitoz.todo.databinding.SingleItemBinding
 import com.mitoz.todo.models.ModelsEntity
@@ -71,7 +74,9 @@ class AdaptersRecAdaptorDone(private var todosList: List<ModelsEntity>)
                     this.expand = convertBooleanToInt(expand)
                     notifyDataSetChanged()
                 }
-
+binding.tvLangName.setTextColor(Color.parseColor("#828282"))
+                binding.tvDescription.setTextColor(Color.parseColor("#828282"))
+                binding.checkBoxNot.setTextColor(Color.parseColor("#828282"))
                 binding.checkBoxNot.isChecked = true
                 binding.checkBoxNot?.setOnCheckedChangeListener { buttonView, isChecked ->
                     if (!isChecked) {

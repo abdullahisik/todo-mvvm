@@ -1,13 +1,14 @@
 package com.mitoz.todo.ui
 
 import android.app.*
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.media.AudioAttributes
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
@@ -18,8 +19,10 @@ import android.widget.ImageView
 import android.widget.RemoteViews
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.room.Room
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.mitoz.todo.MainActivity
 import com.mitoz.todo.R
@@ -32,6 +35,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
+@Suppress("DEPRECATION")
 class UiTodoEntryActivity : AppCompatActivity() {
 
     fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
@@ -51,27 +55,22 @@ class UiTodoEntryActivity : AppCompatActivity() {
     private var timeStr : String = ""
     private var todosList = ArrayList<ModelsEntity>()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ui_todo_entry)
         imageView = findViewById(R.id.imageView)
         textinputTitle = findViewById(R.id.textinpuTitle)
         db = Room.databaseBuilder(this, DatabaseAppDatabase::class.java, "todo-list.db").build()
-
+        window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
         val bundle = intent.extras
-
-// performing the safety null check
         var s:Int? = null
-
-// getting the string back
         if (bundle != null) {
             s = bundle!!.getInt("modelid")
-
             GlobalScope.launch {
                 todosList.add(db.todoDao().getItem(s))
 
             }
-
             val handler = Handler()
             handler.postDelayed({
                 textinputTitle.editText?.setText(todosList[0].title.toEditable())
@@ -83,9 +82,19 @@ class UiTodoEntryActivity : AppCompatActivity() {
                 timeStr = todosList[0].time
                 imageUri = Uri.parse(todosList[0].photograph)
             }, 200)
-
-
-
+            buttonToolbarEntrytrash.setOnClickListener(){
+              GlobalScope.launch {    db.todoDao().delete(todosList[0])}
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                System.runFinalization()
+                Runtime.getRuntime().gc()
+                System.gc()
+                startActivity(intent)
+            }
+        } else {
+            buttonToolbarEntrytrash.visibility = View.GONE
         }
         supportActionBar?.apply {
             title = "Olacak"
@@ -174,13 +183,10 @@ buttonBrowseFiles.setOnClickListener(){
 sheduleDate()
     }
 private fun sheduleDate() {
-    println("olur gibi")
-
     val year = c.get(Calendar.YEAR)
     val month = c.get(Calendar.MONTH)
     val day = c.get(Calendar.DAY_OF_MONTH)
     val dpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-        // Display Selected date in TextView
         val date = "" + dayOfMonth.toString() + "." + month.toString() + "." + year.toString()
 
         textinputSchedule.editText?.text =  date.toEditable()
@@ -225,35 +231,53 @@ mTimePicker.show()
         alarmManager[AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis] = pendingIntent
 
     }
-    private fun getNotification(content: String,id : String): Notification? {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getNotification(content: String, id : String): Notification? {
         val mIntent = Intent(this, UiTodoEntryActivity::class.java)
 
         val pendingIntent = PendingIntent.getActivity(this, 0, mIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val contentView = RemoteViews(packageName, R.layout.activity_after_notification)
+        val soundUri =
+            Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + applicationContext.packageName + "/" + R.raw.alarm_sound)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationChannel = NotificationChannel(id, description, NotificationManager.IMPORTANCE_HIGH)
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.GREEN
             notificationChannel.enableVibration(false)
+            val audioAttributes = AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_ALARM)
+                .build()
+            notificationChannel.setSound(soundUri, audioAttributes)
             notificationManager.createNotificationChannel(notificationChannel)
+
 
             builder = Notification.Builder(this, id)
                 .setContent(contentView)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_foreground))
                 .setContentIntent(pendingIntent)
+                .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+ "://" +this.getPackageName()+"/"+R.raw.alarm_sound))
+
+
+
         } else {
 
+            val audioAttributes = AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .build()
+            notificationChannel.setSound(soundUri, audioAttributes)
             builder = Notification.Builder(this)
                 .setContent(contentView)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher_background))
                 .setContentIntent(pendingIntent)
-        }
-        // notificationManager.notify(1234, builder.build())
+                .setSound(Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE+ "://" +this.getPackageName()+"/"+R.raw.alarm_sound))
 
+        }
         return builder.build()
     }
 }

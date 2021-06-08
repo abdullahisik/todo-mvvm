@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity()  {
 
 
         })
-
+        window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimaryDark)
 
         println("Yatay db : "+widthDp+" -Dikey dp : "+heightDp)
         db = Room.databaseBuilder(applicationContext, DatabaseAppDatabase::class.java, "todo-list.db").build()
