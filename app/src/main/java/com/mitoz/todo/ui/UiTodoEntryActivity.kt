@@ -147,7 +147,7 @@ buttonBrowseFiles.setOnClickListener(){
                                     0,
                                     inputTitle,
                                     inputDesction,
-                                    calendarMilis,
+                                    calendarMilis,c.timeInMillis.toInt(),
                                     imageUri.toString(), 0, "not", dateStr, timeStr
                                 )
                             )

@@ -11,6 +11,7 @@ data class ModelsEntity (
     @ColumnInfo(name = "title") var title: String,
     @ColumnInfo(name = "description") var description: String,
     @ColumnInfo(name = "scheduleFlag") var scheduleFlag: Int,
+    @ColumnInfo(name = "ctimemilis") var ctimemilis: Int,
     @ColumnInfo(name = "photograph") var photograph: String,
     @ColumnInfo(name = "expand") var expand: Int,
     @ColumnInfo(name = "doneornot") var doneornot: String,
